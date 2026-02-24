@@ -1,0 +1,13 @@
+{
+  "name": "autoflex",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back"
+  ],
+  "scripts": {
+    "dev:front": "bun --cwd front dev",
+    "dev:back": "bun --cwd back dev",
+    "dev": "bun run dev:front & bun run dev:back"
+  }
+}
