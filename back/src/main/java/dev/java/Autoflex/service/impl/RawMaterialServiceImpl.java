@@ -2,6 +2,8 @@ package dev.java.Autoflex.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import dev.java.Autoflex.exception.InvalidRawMaterialException;
@@ -31,6 +33,11 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     @Override
     public List<RawMaterial> findAll() {
         return rawMaterialRepository.findAll();
+    }
+
+    @Override
+    public Page<RawMaterial> findAll(Pageable pageable) {
+        return rawMaterialRepository.findAll(pageable);
     }
 
     @Override

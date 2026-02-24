@@ -2,6 +2,8 @@ package dev.java.Autoflex.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,6 +88,17 @@ public class RawMaterialController {
                         .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("get/all/paginated")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista paginada de matérias-primas retornada com sucesso")
+    })
+    public ResponseEntity<Page<RawMaterialResponse>> getAllPaginated(Pageable pageable) {
+        Page<RawMaterialResponse> response = rawMaterialService.findAll(pageable)
+                .map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialResponse.class));
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("get/by/{id}")

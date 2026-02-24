@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -95,7 +99,7 @@ class ProductServiceTest {
         });
     }
 
-    @Test
+@Test
     void shouldFindAllProductsSuccessfully(){
         List<Product> products = List.of(
             new Product(),
@@ -109,6 +113,23 @@ class ProductServiceTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(productRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldFindAllProductsPaginatedSuccessfully(){
+        List<Product> products = List.of(
+            new Product(),
+            new Product()
+        );
+
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Product> page = new PageImpl<>(products, pageable, products.size());
+
+        when(productRepository.findAll(pageable)).thenReturn(page);
+
+        Page<Product> result = productService.findAll(pageable);
+
+        assertEquals(2, result.getContent().size());
     }
 
     // PUT

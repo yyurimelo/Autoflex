@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.java.Autoflex.exception.InvalidRawMaterialException;
 import dev.java.Autoflex.exception.RawMaterialNotFoundException;
+import dev.java.Autoflex.model.Product;
 import dev.java.Autoflex.model.RawMaterial;
 import dev.java.Autoflex.repository.RawMaterialRepository;
 import dev.java.Autoflex.service.impl.RawMaterialServiceImpl;
@@ -108,6 +113,23 @@ class RawMaterialServiceTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(rawMaterialRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldFindAllRawMaterialsPaginatedSuccessfully(){
+        List<RawMaterial> rawMaterials = List.of(
+            new RawMaterial(),
+            new RawMaterial()
+        );
+
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<RawMaterial> page = new PageImpl<>(rawMaterials, pageable, rawMaterials.size());
+        
+        when(rawMaterialRepository.findAll(pageable)).thenReturn(page);
+
+        Page<RawMaterial> result = rawMaterialService.findAll(pageable);
+
+        assertEquals(2, result.getContent().size());
     }
 
     // PUT
