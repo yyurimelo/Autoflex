@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -91,7 +90,7 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
 
     private ProductionSuggestionResponse calculateProductionSuggestion(Product product, List<ProductRawMaterial> materials) {
         if (materials.isEmpty()) {
-            BigDecimal finalPrice = BigDecimal.ZERO; // 0 units * price = 0
+            BigDecimal finalPrice = BigDecimal.ZERO;
             return new ProductionSuggestionResponse(
                     product.getId(), 
                     product.getName(), 
@@ -109,7 +108,6 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
             Integer stockQuantity = material.getRawMaterial().getStockQuantity();
             Integer requiredQuantity = material.getRequiredQuantity();
             
-            // Calcular quantas unidades podem ser produzidas com esta matéria-prima
             Integer producibleWithThisMaterial = stockQuantity / requiredQuantity;
             
             if (maxProducible == null || producibleWithThisMaterial < maxProducible) {
