@@ -65,13 +65,14 @@ autoflex/
 ### Pré-requisitos
 - [Bun](https://bun.sh/) (versão mais recente)
 - [Java 21](https://openjdk.org/)
+- [Maven](https://maven.apache.org/) (para build do backend)
 - [PostgreSQL](https://www.postgresql.org/) (rodando localmente na porta 5432)
 
 ### Passos para instalação
 
 1. **Clonar o repositório**
    ```bash
-   git clone [URL_DO_REPOSITORIO]
+   git clone https://github.com/yyurimelo/Autoflex.git
    cd autoflex
    ```
 
