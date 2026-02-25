@@ -87,8 +87,6 @@ autoflex/
 
 4. **Iniciar as aplicações em modo desenvolvimento**
    ```bash
-   # Inicia frontend e backend simultaneamente
-   bun run dev
    
    # Ou iniciar separadamente:
    bun run dev:front  # Frontend na porta padrão do Vite
@@ -104,8 +102,12 @@ autoflex/
   - `model/`: Entidades JPA (Product, RawMaterial, ProductRawMaterial)
   - `dto/`: Objetos de transferência de dados
   - `repository/`: Interfaces Spring Data JPA
-  - `exception/": Classes de exceção customizadas
+  - `exception/`: Classes de exceção customizadas
   - `config/`: Configurações (ModelMapper, Swagger)
+
+### Testes
+- `src/test/java/dev/java/Autoflex/`:
+  - `service/`: Testes unitários das camadas de serviço
 
 ### Frontend
 - `src/`:
@@ -127,7 +129,6 @@ A documentação completa da API está disponível através do Swagger UI em `ht
 No package.json raiz:
 - `bun run dev:front` - Inicia apenas o frontend
 - `bun run dev:back` - Inicia apenas o backend
-- `bun run dev` - Inicia ambos simultaneamente
 
 ## Observações
 
