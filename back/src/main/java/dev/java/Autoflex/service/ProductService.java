@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import dev.java.Autoflex.dto.queryFilter.ProductFilter;
 import dev.java.Autoflex.model.Product;
 
 public interface ProductService {
@@ -12,7 +13,9 @@ public interface ProductService {
 
     List<Product> findAll();
 
-    Page<Product> findAll(Pageable pageable);
+Page<Product> findAll(Pageable pageable);
+
+    Page<Product> findByFilters(ProductFilter filter, Pageable pageable);
 
     Product findById(Long id);
 

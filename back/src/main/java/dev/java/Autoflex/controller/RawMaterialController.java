@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.java.Autoflex.dto.CreateUpdateRawMaterialRequest;
 import dev.java.Autoflex.dto.RawMaterialResponse;
 import dev.java.Autoflex.model.RawMaterial;
+import dev.java.Autoflex.dto.queryFilter.RawMaterialFilter;
 import dev.java.Autoflex.service.RawMaterialService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,13 +47,10 @@ public class RawMaterialController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<RawMaterialResponse> create(@RequestBody CreateUpdateRawMaterialRequest request) {
-        RawMaterial rawMaterial = modelMapper.map(request, RawMaterial.class);
-
+        RawMaterial rawMaterial = convertToEntity(request);
         RawMaterial saved = rawMaterialService.save(rawMaterial);
-
-        RawMaterialResponse response =
-                modelMapper.map(saved, RawMaterialResponse.class);
-
+        RawMaterialResponse response = convertToResponseMap(saved);
+        
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -68,9 +66,8 @@ public class RawMaterialController {
             @PathVariable Long id,
             @RequestBody CreateUpdateRawMaterialRequest request) {
 
-        RawMaterial rawMaterial = modelMapper.map(request, RawMaterial.class);
+        RawMaterial rawMaterial = convertToEntity(request);
         rawMaterial.setId(id);
-
         rawMaterialService.update(rawMaterial);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -84,19 +81,21 @@ public class RawMaterialController {
         List<RawMaterialResponse> response =
                 rawMaterialService.findAll()
                         .stream()
-                        .map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialResponse.class))
+                        .map(this::convertToResponseMap)
                         .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("get/all/paginated")
+    @PostMapping("get/all/paginated")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista paginada de matérias-primas retornada com sucesso")
     })
-    public ResponseEntity<Page<RawMaterialResponse>> getAllPaginated(Pageable pageable) {
-        Page<RawMaterialResponse> response = rawMaterialService.findAll(pageable)
-                .map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialResponse.class));
+    public ResponseEntity<Page<RawMaterialResponse>> getAllPaginated(
+            @RequestBody RawMaterialFilter filter,
+            Pageable pageable) {
+        Page<RawMaterialResponse> response = rawMaterialService.findByFilters(filter, pageable)
+                .map(this::convertToResponseMap);
 
         return ResponseEntity.ok(response);
     }
@@ -108,7 +107,7 @@ public class RawMaterialController {
     })
     public ResponseEntity<RawMaterialResponse> findById(@PathVariable Long id){
         RawMaterial rawMaterial = rawMaterialService.findById(id);
-        RawMaterialResponse response = modelMapper.map(rawMaterial, RawMaterialResponse.class);
+        RawMaterialResponse response = convertToResponseMap(rawMaterial);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     
@@ -122,4 +121,11 @@ public class RawMaterialController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
+    private RawMaterial convertToEntity(CreateUpdateRawMaterialRequest request) {
+        return modelMapper.map(request, RawMaterial.class);
+    }
+
+    private RawMaterialResponse convertToResponseMap(RawMaterial rawMaterial) {
+        return modelMapper.map(rawMaterial, RawMaterialResponse.class);
+    }
 }

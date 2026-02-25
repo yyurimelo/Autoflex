@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import dev.java.Autoflex.dto.queryFilter.ProductFilter;
 import dev.java.Autoflex.exception.InvalidProductException;
 import dev.java.Autoflex.exception.ProductNotFoundException;
 import dev.java.Autoflex.model.Product;
@@ -35,9 +36,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    @Override
+@Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> findByFilters(ProductFilter filter, Pageable pageable) {
+        return productRepository.findAll(filter.toSpecification(), pageable);
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import dev.java.Autoflex.dto.queryFilter.RawMaterialFilter;
 import dev.java.Autoflex.model.RawMaterial;
 
 public interface RawMaterialService {
@@ -13,6 +14,8 @@ public interface RawMaterialService {
     List<RawMaterial> findAll();
 
     Page<RawMaterial> findAll(Pageable pageable);
+
+    Page<RawMaterial> findByFilters(RawMaterialFilter filter, Pageable pageable);
 
     RawMaterial findById(Long id);
 

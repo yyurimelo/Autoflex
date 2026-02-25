@@ -1,9 +1,8 @@
 package dev.java.Autoflex.controller;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.java.Autoflex.dto.CreateUpdateProductRawMaterialRequest;
-import dev.java.Autoflex.dto.ProductRawMaterialFilterRequest;
-import dev.java.Autoflex.dto.ProductRawMaterialPageResponse;
 import dev.java.Autoflex.dto.ProductRawMaterialResponse;
 import dev.java.Autoflex.dto.ProductResponse;
 import dev.java.Autoflex.dto.RawMaterialResponse;
 import dev.java.Autoflex.model.Product;
 import dev.java.Autoflex.model.ProductRawMaterial;
 import dev.java.Autoflex.model.RawMaterial;
+import dev.java.Autoflex.dto.queryFilter.ProductRawMaterialFilter;
 import dev.java.Autoflex.service.ProductRawMaterialService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -52,42 +50,29 @@ public class ProductRawMaterialController {
         ProductRawMaterial productRawMaterial = convertToEntity(request);
         ProductRawMaterial saved = productRawMaterialService.create(productRawMaterial);
         
-        ProductRawMaterialResponse response = convertToResponse(saved);
+        ProductRawMaterialResponse response = convertToResponseMap(saved);
         
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
 
-    
-
-    @PostMapping("get/all/paginated")
+    @PostMapping("/get/all/paginated")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista filtrada e paginada de associações entre produtos e matérias-primas retornada com sucesso")
     })
-    public ResponseEntity<ProductRawMaterialPageResponse> list(@RequestBody ProductRawMaterialFilterRequest filterRequest) {
-        Page<ProductRawMaterial> page = productRawMaterialService.findByFilters(filterRequest);
+    public ResponseEntity<Page<ProductRawMaterialResponse>> list(
+            @RequestBody ProductRawMaterialFilter filter,
+            Pageable pageable) {
         
-        List<ProductRawMaterialResponse> content = page.getContent()
-                .stream()
-                .map(this::convertToResponse)
-                .toList();
+        Page<ProductRawMaterial> page = productRawMaterialService.findByFilters(filter, pageable);
         
-        ProductRawMaterialPageResponse response = new ProductRawMaterialPageResponse(
-                content, 
-                page.getNumber(), 
-                page.getSize(), 
-                page.getTotalElements(), 
-                page.getTotalPages(), 
-                page.isFirst(), 
-                page.isLast(), 
-                page.isEmpty()
-        );
+        Page<ProductRawMaterialResponse> response = page.map(this::convertToResponseMap);
         
-        return ResponseEntity.ok(response);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
-
-    
 
     @GetMapping("get/{id}")
     @ApiResponses({
@@ -96,9 +81,11 @@ public class ProductRawMaterialController {
     })
     public ResponseEntity<ProductRawMaterialResponse> findById(@PathVariable Long id) {
         ProductRawMaterial productRawMaterial = productRawMaterialService.findById(id);
-        ProductRawMaterialResponse response = convertToResponse(productRawMaterial);
+        ProductRawMaterialResponse response = convertToResponseMap(productRawMaterial);
         
-        return ResponseEntity.ok(response);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @DeleteMapping("delete/{id}")
@@ -127,7 +114,7 @@ public class ProductRawMaterialController {
         return productRawMaterial;
     }
 
-    private ProductRawMaterialResponse convertToResponse(ProductRawMaterial productRawMaterial) {
+    private ProductRawMaterialResponse convertToResponseMap(ProductRawMaterial productRawMaterial) {
         ProductRawMaterialResponse response = new ProductRawMaterialResponse();
         
         response.setId(productRawMaterial.getId());

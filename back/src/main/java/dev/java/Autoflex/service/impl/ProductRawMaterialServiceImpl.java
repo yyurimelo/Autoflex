@@ -1,12 +1,10 @@
 package dev.java.Autoflex.service.impl;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import dev.java.Autoflex.dto.ProductRawMaterialFilterRequest;
+import dev.java.Autoflex.dto.queryFilter.ProductRawMaterialFilter;
 import dev.java.Autoflex.exception.ProductNotFoundException;
 import dev.java.Autoflex.exception.ProductRawMaterialAlreadyExistsException;
 import dev.java.Autoflex.exception.ProductRawMaterialNotFoundException;
@@ -62,23 +60,9 @@ public class ProductRawMaterialServiceImpl implements ProductRawMaterialService 
     
 
     @Override
-    public Page<ProductRawMaterial> findByFilters(ProductRawMaterialFilterRequest filterRequest) {
-        Sort.Direction direction = filterRequest.getSortDirection().equalsIgnoreCase("desc") ? 
-                Sort.Direction.DESC : Sort.Direction.ASC;
+    public Page<ProductRawMaterial> findByFilters(ProductRawMaterialFilter filter, Pageable pageable) {
         
-        Pageable pageable = PageRequest.of(
-                filterRequest.getPage(), 
-                filterRequest.getSize(), 
-                Sort.by(direction, filterRequest.getSortBy())
-        );
-        
-        return productRawMaterialRepository.findByFilters(
-                filterRequest.getProductId(),
-                filterRequest.getRawMaterialId(),
-                filterRequest.getMinRequiredQuantity(),
-                filterRequest.getMaxRequiredQuantity(),
-                pageable
-        );
+        return productRawMaterialRepository.findAll(filter.toSpecification(), pageable);
     }
 
     

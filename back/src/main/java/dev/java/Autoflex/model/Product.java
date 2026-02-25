@@ -1,12 +1,14 @@
 package dev.java.Autoflex.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +24,9 @@ public class Product {
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductRawMaterial> productRawMaterials;
 
     public Product() {}
 

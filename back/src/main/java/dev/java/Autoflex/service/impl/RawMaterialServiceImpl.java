@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import dev.java.Autoflex.dto.queryFilter.RawMaterialFilter;
 import dev.java.Autoflex.exception.InvalidRawMaterialException;
 import dev.java.Autoflex.exception.RawMaterialNotFoundException;
 import dev.java.Autoflex.model.RawMaterial;
@@ -38,6 +39,11 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     @Override
     public Page<RawMaterial> findAll(Pageable pageable) {
         return rawMaterialRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<RawMaterial> findByFilters(RawMaterialFilter filter, Pageable pageable) {
+        return rawMaterialRepository.findAll(filter.toSpecification(), pageable);
     }
 
     @Override

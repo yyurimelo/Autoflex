@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.java.Autoflex.dto.CreateUpdateProductRequest;
 import dev.java.Autoflex.dto.ProductResponse;
 import dev.java.Autoflex.model.Product;
+import dev.java.Autoflex.dto.queryFilter.ProductFilter;
 import dev.java.Autoflex.service.ProductService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,13 +47,10 @@ public class ProductController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<ProductResponse> create(@RequestBody CreateUpdateProductRequest request) {
-        Product product = modelMapper.map(request, Product.class);
-
+        Product product = convertToEntity(request);
         Product saved = productService.save(product);
-
-        ProductResponse response =
-                modelMapper.map(saved, ProductResponse.class);
-
+        ProductResponse response = convertToResponseMap(saved);
+        
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -68,9 +66,8 @@ public class ProductController {
             @PathVariable Long id,
             @RequestBody CreateUpdateProductRequest request) {
 
-        Product product = modelMapper.map(request, Product.class);
+        Product product = convertToEntity(request);
         product.setId(id);
-
         productService.update(product);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -84,19 +81,22 @@ public class ProductController {
         List<ProductResponse> response =
                 productService.findAll()
                         .stream()
-                        .map(product -> modelMapper.map(product, ProductResponse.class))
+                        .map(this::convertToResponseMap)
                         .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("get/all/paginated")
+    @PostMapping("get/all/paginated")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista paginada de produtos retornada com sucesso")
     })
-    public ResponseEntity<Page<ProductResponse>> getAllPaginated(Pageable pageable) {
-        Page<ProductResponse> response = productService.findAll(pageable)
-                .map(product -> modelMapper.map(product, ProductResponse.class));
+    public ResponseEntity<Page<ProductResponse>> getAllPaginated(
+            @RequestBody ProductFilter filter,
+            Pageable pageable) {
+
+        Page<ProductResponse> response = productService.findByFilters(filter, pageable)
+                .map(this::convertToResponseMap);
 
         return ResponseEntity.ok(response);
     }
@@ -108,7 +108,7 @@ public class ProductController {
     })
     public ResponseEntity<ProductResponse> findById(@PathVariable Long id){
         Product product = productService.findById(id);
-        ProductResponse response = modelMapper.map(product, ProductResponse.class);
+        ProductResponse response = convertToResponseMap(product);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     
@@ -122,4 +122,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
+    private Product convertToEntity(CreateUpdateProductRequest request) {
+        return modelMapper.map(request, Product.class);
+    }
+
+    private ProductResponse convertToResponseMap(Product product) {
+        return modelMapper.map(product, ProductResponse.class);
+    }
 }

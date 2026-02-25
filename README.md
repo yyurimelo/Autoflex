@@ -89,7 +89,6 @@ autoflex/
 4. **Iniciar as aplicações em modo desenvolvimento**
    ```bash
    
-   # Ou iniciar separadamente:
    bun run dev:front  # Frontend na porta padrão do Vite
    bun run dev:back   # Backend na porta 8080
    ```

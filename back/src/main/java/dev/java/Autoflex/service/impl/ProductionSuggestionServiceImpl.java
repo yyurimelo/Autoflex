@@ -8,12 +8,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import dev.java.Autoflex.dto.ProductionSuggestionFilterRequest;
 import dev.java.Autoflex.dto.ProductionSuggestionResponse;
 import dev.java.Autoflex.model.Product;
 import dev.java.Autoflex.model.ProductRawMaterial;
@@ -35,31 +33,22 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
     }
 
     @Override
-    public Page<ProductionSuggestionResponse> findProductionSuggestions(ProductionSuggestionFilterRequest filterRequest) {
+    public Page<ProductionSuggestionResponse> findProductionSuggestions(Pageable pageable) {
         List<ProductionSuggestionResponse> allSuggestions = calculateAllProductionSuggestions();
         
-        // Filtrar apenas produtos com matérias-primas associadas
+        // Filtrar apenas produtos com matérias-primas associadas e que podem ser produzidos
         List<ProductionSuggestionResponse> filteredSuggestions = allSuggestions.stream()
                 .filter(suggestion -> suggestion.getProducibleQuantity() > 0)
-                .filter(suggestion -> filterRequest.getProductId() == null || suggestion.getProductId().equals(filterRequest.getProductId()))
-                .filter(suggestion -> filterRequest.getProductName() == null || 
-                        suggestion.getProductName().toLowerCase().contains(filterRequest.getProductName().toLowerCase()))
-                .filter(suggestion -> filterRequest.getMinProducibleQuantity() == null || 
-                        suggestion.getProducibleQuantity() >= filterRequest.getMinProducibleQuantity())
-                .filter(suggestion -> filterRequest.getMaxProducibleQuantity() == null || 
-                        suggestion.getProducibleQuantity() <= filterRequest.getMaxProducibleQuantity())
                 .collect(Collectors.toList());
         
         // Ordenar
-        Sort.Direction direction = filterRequest.getSortDirection().equalsIgnoreCase("desc") ? 
-                Sort.Direction.DESC : Sort.Direction.ASC;
-        
-        Comparator<ProductionSuggestionResponse> comparator = getComparator(filterRequest.getSortBy(), direction);
+        Sort sort = pageable.getSort();
+        Comparator<ProductionSuggestionResponse> comparator = getComparator(sort);
         filteredSuggestions.sort(comparator);
         
         // Paginar
-        int pageSize = filterRequest.getSize();
-        int currentPage = filterRequest.getPage();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
         
         List<ProductionSuggestionResponse> pageContent;
@@ -70,11 +59,8 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
             pageContent = filteredSuggestions.subList(startItem, toIndex);
         }
         
-        Pageable pageable = PageRequest.of(currentPage, pageSize);
         return new PageImpl<>(pageContent, pageable, filteredSuggestions.size());
     }
-
-    
 
     private List<ProductionSuggestionResponse> calculateAllProductionSuggestions() {
         List<Product> products = productRepository.findAll();
@@ -127,7 +113,15 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
         );
     }
 
-    private Comparator<ProductionSuggestionResponse> getComparator(String sortBy, Sort.Direction direction) {
+    private Comparator<ProductionSuggestionResponse> getComparator(Sort sort) {
+        if (sort.isEmpty()) {
+            return Comparator.comparing(ProductionSuggestionResponse::getProductId);
+        }
+        
+        Sort.Order order = sort.iterator().next();
+        String sortBy = order.getProperty();
+        Sort.Direction direction = order.getDirection();
+        
         Comparator<ProductionSuggestionResponse> comparator;
         
         switch (sortBy.toLowerCase()) {
