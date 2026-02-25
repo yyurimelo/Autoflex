@@ -10,6 +10,8 @@ import dev.java.Autoflex.exception.InvalidProductException;
 import dev.java.Autoflex.exception.ProductNotFoundException;
 import dev.java.Autoflex.exception.InvalidRawMaterialException;
 import dev.java.Autoflex.exception.RawMaterialNotFoundException;
+import dev.java.Autoflex.exception.ProductRawMaterialNotFoundException;
+import dev.java.Autoflex.exception.ProductRawMaterialAlreadyExistsException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -29,6 +31,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidRawMaterialException.class)
     private ResponseEntity<String> invalidRawMaterialException(InvalidRawMaterialException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+    @ExceptionHandler(ProductRawMaterialNotFoundException.class)
+    private ResponseEntity<String> productRawMaterialNotFoundHandler(ProductRawMaterialNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+    @ExceptionHandler(ProductRawMaterialAlreadyExistsException.class)
+    private ResponseEntity<String> productRawMaterialAlreadyExistsHandler(ProductRawMaterialAlreadyExistsException exception){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
     
 }
