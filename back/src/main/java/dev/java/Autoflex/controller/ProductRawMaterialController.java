@@ -84,7 +84,7 @@ public class ProductRawMaterialController {
         ProductRawMaterialResponse response = convertToResponseMap(productRawMaterial);
         
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(response);
     }
 

@@ -3,13 +3,14 @@ package dev.java.Autoflex.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import dev.java.Autoflex.dto.ProductionSuggestionResponse;
@@ -34,114 +35,112 @@ public class ProductionSuggestionServiceImpl implements ProductionSuggestionServ
 
     @Override
     public Page<ProductionSuggestionResponse> findProductionSuggestions(Pageable pageable) {
-        List<ProductionSuggestionResponse> allSuggestions = calculateAllProductionSuggestions();
-        
-        // Filtrar apenas produtos com matérias-primas associadas e que podem ser produzidos
-        List<ProductionSuggestionResponse> filteredSuggestions = allSuggestions.stream()
-                .filter(suggestion -> suggestion.getProducibleQuantity() > 0)
+        List<Product> sortedProducts = productRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
                 .collect(Collectors.toList());
-        
-        // Ordenar
-        Sort sort = pageable.getSort();
-        Comparator<ProductionSuggestionResponse> comparator = getComparator(sort);
-        filteredSuggestions.sort(comparator);
-        
-        // Paginar
+
+        List<ProductRawMaterial> allMaterials = productRawMaterialRepository.findAll();
+
+        // Monta um estoque simulado em memória, pegando os dados do reais do banco
+        Map<Long, Integer> availableStock = new HashMap<>();
+
+        allMaterials.forEach(x -> availableStock.putIfAbsent(
+                x.getRawMaterial().getId(),
+                x.getRawMaterial().getStockQuantity()));
+
+        List<ProductionSuggestionResponse> suggestions = new ArrayList<>();
+
+        for (Product product : sortedProducts) {
+
+            // pegar materials de cada produto percorrido
+            List<ProductRawMaterial> materialsOfProduct = allMaterials.stream()
+                    .filter(m -> m.getProduct().getId().equals(product.getId()))
+                    .collect(Collectors.toList());
+
+            if (materialsOfProduct.isEmpty())
+                continue;
+
+            int maxProducible = calculateMaxProducible(materialsOfProduct, availableStock);
+
+            if (maxProducible > 0) {
+                for (ProductRawMaterial m : materialsOfProduct) {
+                    Long materialId = m.getRawMaterial().getId();
+                    int consumed = maxProducible * m.getRequiredQuantity();
+
+                    // Desconta do estoque simulado
+                    availableStock.merge(materialId, -consumed, Integer::sum);
+                }
+            }
+
+            BigDecimal finalPrice = product.getPrice()
+                    .multiply(BigDecimal.valueOf(maxProducible));
+
+            String limitingMaterial = findLimitingMaterial(materialsOfProduct, availableStock);
+
+            suggestions.add(new ProductionSuggestionResponse(
+                    product.getId(),
+                    product.getName(),
+                    maxProducible,
+                    product.getPrice(),
+                    limitingMaterial,
+                    finalPrice));
+        }
+
+        List<ProductionSuggestionResponse> filtered = suggestions.stream()
+                .filter(s -> s.getProducibleQuantity() > 0)
+                .collect(Collectors.toList());
+
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        
-        List<ProductionSuggestionResponse> pageContent;
-        if (filteredSuggestions.size() < startItem) {
-            pageContent = new ArrayList<>();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, filteredSuggestions.size());
-            pageContent = filteredSuggestions.subList(startItem, toIndex);
-        }
-        
-        return new PageImpl<>(pageContent, pageable, filteredSuggestions.size());
+        int start = currentPage * pageSize;
+        int end = Math.min(start + pageSize, filtered.size());
+
+        List<ProductionSuggestionResponse> pageContent = start >= filtered.size() ? new ArrayList<>()
+                : filtered.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageable, filtered.size());
     }
 
-    private List<ProductionSuggestionResponse> calculateAllProductionSuggestions() {
-        List<Product> products = productRepository.findAll();
-        List<ProductionSuggestionResponse> suggestions = new ArrayList<>();
-        
-        for (Product product : products) {
-            List<ProductRawMaterial> materials = productRawMaterialRepository.findByProductId(product.getId());
-            suggestions.add(calculateProductionSuggestion(product, materials));
-        }
-        
-        return suggestions;
-    }
+    // Método pra calcular o máximo de produção
+    private int calculateMaxProducible(
+            List<ProductRawMaterial> materials,
+            Map<Long, Integer> availableStock) {
 
-    private ProductionSuggestionResponse calculateProductionSuggestion(Product product, List<ProductRawMaterial> materials) {
-        if (materials.isEmpty()) {
-            BigDecimal finalPrice = BigDecimal.ZERO;
-            return new ProductionSuggestionResponse(
-                    product.getId(), 
-                    product.getName(), 
-                    0, 
-                    product.getPrice(),
-                    "Sem matérias-primas associadas",
-                    finalPrice
-            );
-        }
-        
-        Integer maxProducible = null;
-        String limitingMaterial = "";
-        
-        for (ProductRawMaterial material : materials) {
-            Integer stockQuantity = material.getRawMaterial().getStockQuantity();
-            Integer requiredQuantity = material.getRequiredQuantity();
-            
-            Integer producibleWithThisMaterial = stockQuantity / requiredQuantity;
-            
-            if (maxProducible == null || producibleWithThisMaterial < maxProducible) {
-                maxProducible = producibleWithThisMaterial;
-                limitingMaterial = material.getRawMaterial().getName() + " (estoque: " + stockQuantity + ", necessário: " + requiredQuantity + ")";
+        int max = Integer.MAX_VALUE;
+
+        for (ProductRawMaterial m : materials) {
+            int stock = availableStock.getOrDefault(m.getRawMaterial().getId(), 0);
+            int canProduce = stock / m.getRequiredQuantity();
+
+            if (canProduce < max) {
+                max = canProduce;
             }
         }
-        
-        BigDecimal finalPrice = product.getPrice().multiply(BigDecimal.valueOf(maxProducible));
-        return new ProductionSuggestionResponse(
-                product.getId(), 
-                product.getName(), 
-                maxProducible, 
-                product.getPrice(),
-                limitingMaterial,
-                finalPrice
-        );
+
+        return max == Integer.MAX_VALUE ? 0 : max;
     }
 
-    private Comparator<ProductionSuggestionResponse> getComparator(Sort sort) {
-        if (sort.isEmpty()) {
-            return Comparator.comparing(ProductionSuggestionResponse::getProductId);
+    // Pegar qual material ta limitando
+    private String findLimitingMaterial(
+            List<ProductRawMaterial> materials,
+            Map<Long, Integer> availableStock) {
+
+        int lowestCanProduce = Integer.MAX_VALUE;
+        String limitingName = "Não identificado";
+
+        for (ProductRawMaterial m : materials) {
+            int stock = availableStock.getOrDefault(m.getRawMaterial().getId(), 0);
+            int canProduce = stock / m.getRequiredQuantity();
+
+            if (canProduce < lowestCanProduce) {
+                lowestCanProduce = canProduce;
+                limitingName = m.getRawMaterial().getName()
+                        + " (estoque: " + stock
+                        + ", necessário: " + m.getRequiredQuantity() + ")";
+            }
         }
-        
-        Sort.Order order = sort.iterator().next();
-        String sortBy = order.getProperty();
-        Sort.Direction direction = order.getDirection();
-        
-        Comparator<ProductionSuggestionResponse> comparator;
-        
-        switch (sortBy.toLowerCase()) {
-            case "productname":
-                comparator = Comparator.comparing(ProductionSuggestionResponse::getProductName);
-                break;
-            case "produciblequantity":
-                comparator = Comparator.comparing(ProductionSuggestionResponse::getProducibleQuantity);
-                break;
-            case "limitingmaterial":
-                comparator = Comparator.comparing(ProductionSuggestionResponse::getLimitingMaterial);
-                break;
-            case "finalprice":
-                comparator = Comparator.comparing(ProductionSuggestionResponse::getFinalPrice);
-                break;
-            default:
-                comparator = Comparator.comparing(ProductionSuggestionResponse::getProductId);
-                break;
-        }
-        
-        return direction == Sort.Direction.DESC ? comparator.reversed() : comparator;
+
+        return limitingName;
     }
 }
