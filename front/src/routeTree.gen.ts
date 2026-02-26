@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Sections_layoutRouteImport } from './routes/sections/__layout'
+import { Route as SectionsProductIndexRouteImport } from './routes/sections/product/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Sections_layoutRoute = Sections_layoutRouteImport.update({
+  id: '/sections/__layout',
+  path: '/sections',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectionsProductIndexRoute = SectionsProductIndexRouteImport.update({
+  id: '/sections/product/',
+  path: '/sections/product/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sections': typeof Sections_layoutRoute
+  '/sections/product/': typeof SectionsProductIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sections': typeof Sections_layoutRoute
+  '/sections/product': typeof SectionsProductIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sections/__layout': typeof Sections_layoutRoute
+  '/sections/product/': typeof SectionsProductIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sections' | '/sections/product/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/sections' | '/sections/product'
+  id: '__root__' | '/' | '/sections/__layout' | '/sections/product/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Sections_layoutRoute: typeof Sections_layoutRoute
+  SectionsProductIndexRoute: typeof SectionsProductIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sections/__layout': {
+      id: '/sections/__layout'
+      path: '/sections'
+      fullPath: '/sections'
+      preLoaderRoute: typeof Sections_layoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sections/product/': {
+      id: '/sections/product/'
+      path: '/sections/product'
+      fullPath: '/sections/product/'
+      preLoaderRoute: typeof SectionsProductIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Sections_layoutRoute: Sections_layoutRoute,
+  SectionsProductIndexRoute: SectionsProductIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
