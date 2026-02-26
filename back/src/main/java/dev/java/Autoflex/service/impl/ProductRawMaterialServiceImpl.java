@@ -55,26 +55,18 @@ public class ProductRawMaterialServiceImpl implements ProductRawMaterialService 
         return productRawMaterialRepository.save(productRawMaterial);
     }
 
-    
-
-    
-
     @Override
     public Page<ProductRawMaterial> findByFilters(ProductRawMaterialFilter filter, Pageable pageable) {
         
         return productRawMaterialRepository.findAll(filter.toSpecification(), pageable);
-    }
-
-    
+    }   
 
     @Override
     public ProductRawMaterial findById(Long id) {
         return productRawMaterialRepository.findById(id)
                 .orElseThrow(ProductRawMaterialNotFoundException::new);
     }
-
-    
-
+  
     @Override
     public void deleteById(Long id) {
         if (!productRawMaterialRepository.existsById(id)) {
