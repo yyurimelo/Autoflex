@@ -1,20 +1,20 @@
 # Autoflex
 
-📖 ## Sobre o Projeto
+## Sobre o Projeto
 
 O Autoflex é um sistema de gerenciamento de produção desenvolvido com uma arquitetura monorepo, projetado para otimizar o controle de matérias-primas, produtos e sugestões de produção. A aplicação oferece uma interface moderna e eficiente para gerenciar recursos de produção em ambiente industrial.
 
-🏗️ ## Arquitetura do Sistema
+## Arquitetura do Sistema
 
 O projeto segue uma arquitetura cliente-servidor clássica com três camadas principais:
 
-💻 ### Frontend (Cliente)
+### Frontend (Cliente)
 - **Tecnologia**: React + TypeScript + Vite
 - **Responsabilidade**: Interface de usuário moderna e responsiva
 - **Estado da aplicação**: Gerenciado localmente com hooks do React
 - **Comunicação**: Realizada via HTTP com a API REST do backend
 
-⚙️ ### Backend (Servidor)
+### Backend (Servidor)
 - **Tecnologia**: Spring Boot 3.3.5 com Java 21
 - **Responsabilidade**: Lógica de negócio, endpoints REST e validação
 - **Camadas**: 
@@ -23,20 +23,20 @@ O projeto segue uma arquitetura cliente-servidor clássica com três camadas pri
   - Repositories: Acesso a dados
   - Models: Entidades JPA
 
-🗄️ ### Banco de Dados
+### Banco de Dados
 - **Tecnologia**: PostgreSQL
 - **ORM**: Hibernate/JPA
 - **Responsabilidade**: Armazenamento persistente de dados
 
-🧰 ## Tecnologias e Dependências
+## Tecnologias e Dependências
 
-🎨 ### Frontend
+### Frontend
 - **React 19.2.0**: Biblioteca para construção de interfaces
 - **TypeScript 5.9.3**: Tipagem estática para JavaScript
 - **Vite 7.3.1**: Build tool rápido e moderno
 - **ESLint**: Análise estática de código
 
-🔧 ### Backend
+### Backend
 - **Spring Boot 3.3.5**: Framework principal
 - **Spring Data JPA**: Persistência de dados
 - **PostgreSQL Driver**: Conector com banco de dados
@@ -44,7 +44,7 @@ O projeto segue uma arquitetura cliente-servidor clássica com três camadas pri
 - **ModelMapper**: Mapeamento de objetos
 - **SpringDoc OpenAPI**: Documentação de API
 
-📦 ## Gestor de Pacotes e Monorepo
+## Gestor de Pacotes e Monorepo
 
 Este projeto utiliza **Bun** como gestor principal de pacotes, oferecendo instalação de dependências rápida e eficiente. A estrutura do monorepo é organizada da seguinte forma:
 
@@ -60,15 +60,15 @@ autoflex/
     └── src/
 ```
 
-🚀 ## Instalação e Configuração
+## Instalação e Configuração
 
-✅ ### Pré-requisitos
+### Pré-requisitos
 - [Bun](https://bun.sh/) (versão mais recente)
 - [Java 21](https://openjdk.org/)
 - [Maven](https://maven.apache.org/) (para build do backend)
 - [PostgreSQL](https://www.postgresql.org/) (rodando localmente na porta 5432)
 
-🪜 ### Passos para instalação
+### Passos para instalação
 
 1. **Clonar o repositório**
    ```bash
@@ -93,9 +93,9 @@ autoflex/
    bun run dev:back   # Backend na porta 8080
    ```
 
-📁 ## Estrutura do Projeto
+## Estrutura do Projeto
 
-⚙️ ### Backend
+### Backend
 - `src/main/java/dev/java/Autoflex/`:
   - `controller/`: Endpoints REST
   - `service/`: Lógica de negócio
@@ -105,16 +105,16 @@ autoflex/
   - `exception/`: Classes de exceção customizadas
   - `config/`: Configurações (ModelMapper, Swagger)
 
-🧪 ### Testes
+### Testes
 - `src/test/java/dev/java/Autoflex/`:
   - `service/`: Testes unitários das camadas de serviço
 
-🎨 ### Frontend
+### Frontend
 - `src/`:
   - Componentes React (atualmente apenas componente App inicial)
   - Arquivos de configuração (Vite, TypeScript, ESLint)
 
-🔌 ## Endpoints da API
+## Endpoints da API
 
 O backend expõe endpoints REST para gerenciar:
 - **Produtos**: CRUD completo para produtos
@@ -124,13 +124,13 @@ O backend expõe endpoints REST para gerenciar:
 
 A documentação completa da API está disponível através do Swagger UI em `http://localhost:8080/swagger-ui.html` quando o backend está em execução.
 
-🧾 ## Scripts Úteis
+## Scripts Úteis
 
 No package.json raiz:
 - `bun run dev:front` - Inicia apenas o frontend
 - `bun run dev:back` - Inicia apenas o backend
 
-📝 ## Observações
+## Observações
 
 - O frontend atualmente está em estado inicial com o template React padrão
 - O backend já possui estrutura completa para gerenciamento de produtos e matérias-primas
