@@ -9,87 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as Raw_materialsIndexRouteImport } from './routes/raw_materials/index'
-import { Route as Product_raw_materialsIndexRouteImport } from './routes/product_raw_materials/index'
-import { Route as ProductIndexRouteImport } from './routes/product/index'
+import { Route as IndexRouteImport } from './routes/index'
 
-const Raw_materialsIndexRoute = Raw_materialsIndexRouteImport.update({
-  id: '/raw_materials/',
-  path: '/raw_materials/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Product_raw_materialsIndexRoute =
-  Product_raw_materialsIndexRouteImport.update({
-    id: '/product_raw_materials/',
-    path: '/product_raw_materials/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ProductIndexRoute = ProductIndexRouteImport.update({
-  id: '/product/',
-  path: '/product/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/product/': typeof ProductIndexRoute
-  '/product_raw_materials/': typeof Product_raw_materialsIndexRoute
-  '/raw_materials/': typeof Raw_materialsIndexRoute
+  '/': typeof IndexRoute
 }
 export interface FileRoutesByTo {
-  '/product': typeof ProductIndexRoute
-  '/product_raw_materials': typeof Product_raw_materialsIndexRoute
-  '/raw_materials': typeof Raw_materialsIndexRoute
+  '/': typeof IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/product/': typeof ProductIndexRoute
-  '/product_raw_materials/': typeof Product_raw_materialsIndexRoute
-  '/raw_materials/': typeof Raw_materialsIndexRoute
+  '/': typeof IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/product/' | '/product_raw_materials/' | '/raw_materials/'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/product' | '/product_raw_materials' | '/raw_materials'
-  id: '__root__' | '/product/' | '/product_raw_materials/' | '/raw_materials/'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ProductIndexRoute: typeof ProductIndexRoute
-  Product_raw_materialsIndexRoute: typeof Product_raw_materialsIndexRoute
-  Raw_materialsIndexRoute: typeof Raw_materialsIndexRoute
+  IndexRoute: typeof IndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/raw_materials/': {
-      id: '/raw_materials/'
-      path: '/raw_materials'
-      fullPath: '/raw_materials/'
-      preLoaderRoute: typeof Raw_materialsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/product_raw_materials/': {
-      id: '/product_raw_materials/'
-      path: '/product_raw_materials'
-      fullPath: '/product_raw_materials/'
-      preLoaderRoute: typeof Product_raw_materialsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/product/': {
-      id: '/product/'
-      path: '/product'
-      fullPath: '/product/'
-      preLoaderRoute: typeof ProductIndexRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  ProductIndexRoute: ProductIndexRoute,
-  Product_raw_materialsIndexRoute: Product_raw_materialsIndexRoute,
-  Raw_materialsIndexRoute: Raw_materialsIndexRoute,
+  IndexRoute: IndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
