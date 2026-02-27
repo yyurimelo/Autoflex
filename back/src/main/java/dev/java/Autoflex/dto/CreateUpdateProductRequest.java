@@ -12,7 +12,8 @@ public class CreateUpdateProductRequest {
     @NotNull
     private BigDecimal price;
 
-    public CreateUpdateProductRequest() {}
+    public CreateUpdateProductRequest() {
+    }
 
     public CreateUpdateProductRequest(@NotNull String name, @NotNull BigDecimal price) {
         this.name = name;

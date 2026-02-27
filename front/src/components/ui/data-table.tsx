@@ -19,7 +19,7 @@ import { DataTablePagination } from "./pagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[] | any
   pagination?: boolean
 }
 
@@ -28,11 +28,13 @@ export function DataTable<TData, TValue>({
   data,
   pagination = false,
 }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+  const table = data && typeof data === 'object' && 'getRowModel' in data 
+    ? data 
+    : useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+      })
 
   return (
     <div className="overflow-hidden rounded-md border">
