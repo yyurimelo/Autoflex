@@ -1,7 +1,7 @@
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 // hooks
 import { useIsMobile } from "@/hooks/use-mobile";
