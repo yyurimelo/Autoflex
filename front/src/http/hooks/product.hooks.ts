@@ -1,9 +1,7 @@
-import { keepPreviousData, QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { createProduct, getProductsPaginated } from "../services/product.service";
 import { toast } from "sonner";
-
-const queryClient = new QueryClient()
 
 export const useProductPaginationQuery = () =>
   useQuery({
@@ -17,17 +15,23 @@ export const useProductPaginationQuery = () =>
     placeholderData: keepPreviousData,
   });
 
-export const useCreateProductMutation = (setOpen: (value: boolean) => void) =>
-  useMutation({
+export const useCreateProductMutation = (
+  setOpen: (value: boolean) => void
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: createProduct,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+
       toast.success("Produto criado com sucesso!");
-      if (setOpen) {
-        setOpen(false)
-      }
+      setOpen(false);
     },
     onError: (error: any) => {
       toast.error(error.message);
     },
   });
+};
