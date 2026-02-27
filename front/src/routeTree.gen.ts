@@ -10,53 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as Sections_layoutRouteImport } from './routes/sections/__layout'
-import { Route as SectionsProductIndexRouteImport } from './routes/sections/product/index'
+import { Route as AppAppRouteImport } from './routes/_app/app'
+import { Route as AppAppProductIndexRouteImport } from './routes/_app/app.product/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Sections_layoutRoute = Sections_layoutRouteImport.update({
-  id: '/sections/__layout',
-  path: '/sections',
+const AppAppRoute = AppAppRouteImport.update({
+  id: '/_app/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SectionsProductIndexRoute = SectionsProductIndexRouteImport.update({
-  id: '/sections/product/',
-  path: '/sections/product/',
-  getParentRoute: () => rootRouteImport,
+const AppAppProductIndexRoute = AppAppProductIndexRouteImport.update({
+  id: '/product/',
+  path: '/product/',
+  getParentRoute: () => AppAppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/sections': typeof Sections_layoutRoute
-  '/sections/product/': typeof SectionsProductIndexRoute
+  '/app': typeof AppAppRouteWithChildren
+  '/app/product/': typeof AppAppProductIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/sections': typeof Sections_layoutRoute
-  '/sections/product': typeof SectionsProductIndexRoute
+  '/app': typeof AppAppRouteWithChildren
+  '/app/product': typeof AppAppProductIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/sections/__layout': typeof Sections_layoutRoute
-  '/sections/product/': typeof SectionsProductIndexRoute
+  '/_app/app': typeof AppAppRouteWithChildren
+  '/_app/app/product/': typeof AppAppProductIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sections' | '/sections/product/'
+  fullPaths: '/' | '/app' | '/app/product/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sections' | '/sections/product'
-  id: '__root__' | '/' | '/sections/__layout' | '/sections/product/'
+  to: '/' | '/app' | '/app/product'
+  id: '__root__' | '/' | '/_app/app' | '/_app/app/product/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Sections_layoutRoute: typeof Sections_layoutRoute
-  SectionsProductIndexRoute: typeof SectionsProductIndexRoute
+  AppAppRoute: typeof AppAppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -68,27 +67,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sections/__layout': {
-      id: '/sections/__layout'
-      path: '/sections'
-      fullPath: '/sections'
-      preLoaderRoute: typeof Sections_layoutRouteImport
+    '/_app/app': {
+      id: '/_app/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppAppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sections/product/': {
-      id: '/sections/product/'
-      path: '/sections/product'
-      fullPath: '/sections/product/'
-      preLoaderRoute: typeof SectionsProductIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_app/app/product/': {
+      id: '/_app/app/product/'
+      path: '/product'
+      fullPath: '/app/product/'
+      preLoaderRoute: typeof AppAppProductIndexRouteImport
+      parentRoute: typeof AppAppRoute
     }
   }
 }
 
+interface AppAppRouteChildren {
+  AppAppProductIndexRoute: typeof AppAppProductIndexRoute
+}
+
+const AppAppRouteChildren: AppAppRouteChildren = {
+  AppAppProductIndexRoute: AppAppProductIndexRoute,
+}
+
+const AppAppRouteWithChildren =
+  AppAppRoute._addFileChildren(AppAppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Sections_layoutRoute: Sections_layoutRoute,
-  SectionsProductIndexRoute: SectionsProductIndexRoute,
+  AppAppRoute: AppAppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

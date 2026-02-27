@@ -5,6 +5,7 @@ export const Route = createRootRoute({
     <>
       <HeadContent />
       <Outlet />
+      {/* <TanStackRouterDevtools /> */}
     </>
   ),
 })
