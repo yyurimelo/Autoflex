@@ -2,7 +2,7 @@
 // icons
 import type { ProductDataModel } from "@/@types/product/ProductDataModel";
 import type { ColumnDef } from "@tanstack/react-table";
-import { AppWindow } from "lucide-react";
+import { ProductActions } from "./actions";
 
 function formatPrice(value: string | number | undefined) {
   if (value === undefined) return "-";
@@ -31,5 +31,9 @@ export const columns: ColumnDef<ProductDataModel>[] = [
     accessorKey: "price",
     header: "Preço",
     cell: ({ row }) => formatPrice(row.original.price) || "-",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <ProductActions item={row.original} />,
   },
 ];

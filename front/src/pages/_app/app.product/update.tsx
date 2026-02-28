@@ -1,10 +1,9 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useEffect, useId, type Dispatch } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 // hooks
-import { useIsMobile } from "@/hooks/use-mobile";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -15,59 +14,63 @@ import {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+  SheetTitle
 } from "@/components/ui/sheet";
 
-import { LoaderCircle, Plus } from "lucide-react";
-import { useCreateProductMutation } from "@/http/hooks/product.hooks";
+import { LoaderCircle } from "lucide-react";
+import { useUpdateProductMutation } from "@/http/hooks/product.hooks";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Monetary } from "@/components/ui/monetary";
+import type { ProductDataModel } from "@/@types/product/ProductDataModel";
 
 // -----------------------------------------------------------------------------
 
-const createProductForm = z.object({
+const updateProductForm = z.object({
   name: z.string().min(1, "Campo obrigatório"),
   price: z.number().min(0.01, "Informe um valor válido"),
 });
 
-type CreateProductForm = z.infer<typeof createProductForm>;
+type UpdateProductForm = z.infer<typeof updateProductForm>;
 
 // -----------------------------------------------------------------------------
 
-export function ProductCreate() {
-  const id = useId();
-  const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
+type Props = {
+  item?: ProductDataModel
+  open: boolean;
+  setOpen: Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const form = useForm<CreateProductForm>({
-    resolver: zodResolver(createProductForm),
-    defaultValues: {
-      name: "",
-      price: 0,
-    },
+export function ProductUpdate({ item, open, setOpen }: Props) {
+  const id = useId();
+
+  const form = useForm<UpdateProductForm>({
+    resolver: zodResolver(updateProductForm),
   });
 
-  const { mutateAsync: createProductFn, isPending } =
-    useCreateProductMutation(setOpen);
+  useEffect(() => {
+    if (item) {
+      form.reset(item);
+    }
+  }, [open, form, item]);
 
-  async function handleSubmit(data: CreateProductForm) {
-    await createProductFn(data);
+
+  const { mutateAsync: updateProductFn, isPending } =
+    useUpdateProductMutation(setOpen);
+
+  async function handleSubmit(data: UpdateProductForm) {
+    await updateProductFn({
+      id: item?.id!,
+      name: data.name,
+      price: data.price,
+    });
     form.reset();
   }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button size={isMobile ? "icon" : "default"}>
-          <Plus className={`${!isMobile && "mr-2"} h-4 w-4`} />
-          <p className={`hidden ${!isMobile && "sm:block"}`}>Criar Novo</p>
-        </Button>
-      </SheetTrigger>
-
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Criar novo produto</SheetTitle>
+          <SheetTitle>Atualizar produto</SheetTitle>
           <SheetDescription>
             Preencha os dados abaixo:
           </SheetDescription>
@@ -113,14 +116,17 @@ export function ProductCreate() {
         </form>
 
         <SheetFooter className="lg:mt-4 flex flex-row justify-end">
-          <Button variant="outline" type="button" onClick={() => form.reset()}>
+          <Button variant="outline" type="button" onClick={() => form.reset({
+            name: "",
+            price: 0
+          })}>
             Limpar
           </Button>
           <Button disabled={isPending} form={id} type="submit">
             {isPending && (
               <LoaderCircle className="w-4 h-4 text-primary-foreground animate-spin mr-2" />
             )}
-            {isPending ? "Criando" : "Confirmar"}
+            {isPending ? "Atualizando" : "Confirmar"}
           </Button>
         </SheetFooter>
       </SheetContent>

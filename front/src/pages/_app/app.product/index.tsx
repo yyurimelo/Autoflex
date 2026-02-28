@@ -1,22 +1,39 @@
 import { useProductPaginationQuery } from '@/http/hooks/product.hooks';
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 import { getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { columns } from './columns';
 import { DataTable } from '@/components/ui/data-table';
 import { ProductCreate } from './create';
+import { useGlobalPageSize } from '@/hooks/use-global-page-size';
+import { ProductFilters } from './filters';
+import { useScopedFilters } from '@/hooks/use-scoped-filters';
+import { ProductFiltersTag } from './filters-tag';
 
 export const Route = createFileRoute('/_app/app/product/')({
-  component: RouteComponent,
+  component: Product,
 })
 
-function RouteComponent() {
-  const { data: result, isLoading } = useProductPaginationQuery();
+function Product() {
+  const { pageSize, setSize } = useGlobalPageSize();
+
+  const { filters, setPage } = useScopedFilters("products");
+  const page = filters.page ?? 0;
+
+  const { data: result, isLoading } =
+    useProductPaginationQuery(filters, page, pageSize);
 
   const table = useReactTable({
     data: result?.content ?? [],
     columns,
     manualPagination: true,
     enableRowSelection: true,
+    pageCount: result?.totalPages ?? 0,
+    state: {
+      pagination: {
+        pageIndex: page,
+        pageSize,
+      },
+    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -35,14 +52,22 @@ function RouteComponent() {
           </span>
         </div>
 
-        <ProductCreate />
+        <div className="flex items-center gap-3">
+          <ProductFilters />
+          <ProductCreate />
+        </div>
       </header>
+
+      <ProductFiltersTag />
 
       <div className="grid grid-cols-1 mt-6">
         <DataTable
-          data={table}
           columns={columns}
-          pagination
+          data={table}
+          isLoading={isLoading}
+          hasPagination={true}
+          onPageChange={(newPage) => setPage(newPage - 1)}
+          onPageSizeChange={(size) => setSize(Number(size))}
         />
       </div>
     </>

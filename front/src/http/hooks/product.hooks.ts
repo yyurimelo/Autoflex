@@ -1,18 +1,22 @@
-import { keepPreviousData, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createProduct, getProductsPaginated } from "../services/product.service";
+import { createProduct, getProductsPaginated, removeProduct, updateProduct } from "../services/product.service";
 import { toast } from "sonner";
 
-export const useProductPaginationQuery = () =>
+export const useProductPaginationQuery = (filters: Record<string, any>,
+  page: number,
+  size: number
+) =>
   useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", filters, page, size],
     queryFn: () =>
       getProductsPaginated({
-        name: undefined,
-        page: 0,
-        size: 10,
+        name: filters.name || undefined,
+        page,
+        size,
       }),
     placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
   });
 
 export const useCreateProductMutation = (
@@ -35,3 +39,42 @@ export const useCreateProductMutation = (
     },
   });
 };
+
+export const useDeleteProductMutation = (
+  id: string
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => removeProduct(id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+      toast.success("Produto deletado com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
+  });
+}
+
+export const useUpdateProductMutation = (
+  setOpen: (value: boolean) => void
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProduct,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+      toast.success("Produto atualizado com sucesso!");
+      setOpen(false);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  })
+}
