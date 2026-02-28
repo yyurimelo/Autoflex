@@ -125,6 +125,7 @@ export function Combo({
       <PopoverContent
         className={cn("p-2")}
         style={{ width: `${buttonWidth}px` }}
+        onWheel={(e) => e.stopPropagation()}
       >
         <Command>
           <CommandInput

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { Filter } from "lucide-react";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useScopedFilters } from "@/hooks/use-scoped-filters";
 
 // -----------------------------------------------------------------------------
@@ -87,53 +87,55 @@ export function AssociationFilters() {
         </SheetHeader>
 
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 px-4">
-          <Controller
-            name="productId"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Produto</FieldLabel>
-                <Combo
-                  className="w-full"
-                  onSelect={field.onChange}
-                  value={field.value}
-                  loading={isLoadingProducts}
-                  itens={products?.map((product) => ({
-                    label: product.name,
-                    value: String(product.id),
-                  }))}
-                  placeholder="Selecione um produto"
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldGroup>
+            <Controller
+              name="productId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Produto</FieldLabel>
+                  <Combo
+                    className="w-full"
+                    onSelect={field.onChange}
+                    value={field.value}
+                    loading={isLoadingProducts}
+                    itens={products?.map((product) => ({
+                      label: product.name,
+                      value: String(product.id),
+                    }))}
+                    placeholder="Selecione um produto"
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="rawMaterialId"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Matéria Prima</FieldLabel>
-                <Combo
-                  className="w-full"
-                  onSelect={field.onChange}
-                  value={field.value}
-                  loading={isLoadingRawMaterials}
-                  itens={rawMaterials?.map((rawMaterial) => ({
-                    label: rawMaterial.name,
-                    value: String(rawMaterial.id),
-                  }))}
-                  placeholder="Selecione uma matéria prima"
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+            <Controller
+              name="rawMaterialId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Matéria Prima</FieldLabel>
+                  <Combo
+                    className="w-full"
+                    onSelect={field.onChange}
+                    value={field.value}
+                    loading={isLoadingRawMaterials}
+                    itens={rawMaterials?.map((rawMaterial) => ({
+                      label: rawMaterial.name,
+                      value: String(rawMaterial.id),
+                    }))}
+                    placeholder="Selecione uma matéria prima"
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
 
         <SheetFooter className="lg:mt-4 flex flex-row justify-end">

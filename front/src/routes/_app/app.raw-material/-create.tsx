@@ -21,7 +21,7 @@ import {
 
 import { LoaderCircle, Plus } from "lucide-react";
 import { useCreateRawMaterialMutation } from "@/http/hooks/raw-material.hooks";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 // -----------------------------------------------------------------------------
 
@@ -73,45 +73,46 @@ export function RawMaterialCreate() {
         </SheetHeader>
 
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 px-4">
-          <Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Nome *</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Nome *</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="stockQuantity"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Quantidade em Estoque *</FieldLabel>
-                <Input
-                  type="number"
-                  {...field}
-                  value={field.value}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-
+            <Controller
+              name="stockQuantity"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Quantidade em Estoque *</FieldLabel>
+                  <Input
+                    type="number"
+                    {...field}
+                    value={field.value}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
 
         <SheetFooter className="lg:mt-4 flex flex-row justify-end">

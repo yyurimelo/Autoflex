@@ -19,7 +19,7 @@ import {
 
 import { LoaderCircle } from "lucide-react";
 import { useUpdateProductMutation } from "@/http/hooks/product.hooks";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Monetary } from "@/components/ui/monetary";
 import type { ProductDataModel } from "@/@types/product/ProductDataModel";
 
@@ -77,42 +77,43 @@ export function ProductUpdate({ item, open, setOpen }: Props) {
         </SheetHeader>
 
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 px-4">
-          <Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Nome *</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Nome *</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="price"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Preço *</FieldLabel>
-                <Monetary
-                  value={field.value}
-                  onChange={(value) => field.onChange(value)}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-
+            <Controller
+              name="price"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Preço *</FieldLabel>
+                  <Monetary
+                    value={field.value}
+                    onChange={(value) => field.onChange(value)}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
 
         <SheetFooter className="lg:mt-4 flex flex-row justify-end">

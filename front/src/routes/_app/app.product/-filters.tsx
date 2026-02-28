@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { Filter } from "lucide-react";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useScopedFilters } from "@/hooks/use-scoped-filters";
 
 // -----------------------------------------------------------------------------
@@ -40,7 +40,7 @@ export function ProductFilters() {
   const [open, setOpen] = useState(false);
   const { setFilter, clearFilters } = useScopedFilters("products");
 
-const form = useForm<FilterProductForm>({
+  const form = useForm<FilterProductForm>({
     resolver: zodResolver(filterProductForm),
     defaultValues: {
       name: "",
@@ -49,7 +49,7 @@ const form = useForm<FilterProductForm>({
   });
 
 
-async function handleSubmit(data: FilterProductForm) {
+  async function handleSubmit(data: FilterProductForm) {
     clearFilters();
 
     if (data.name) {
@@ -82,45 +82,47 @@ async function handleSubmit(data: FilterProductForm) {
         </SheetHeader>
 
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 px-4">
-<Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
-                <Input
-                  className="w-full"
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
+                  <Input
+                    className="w-full"
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="price"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Preço</FieldLabel>
-                <Input
-                  className="w-full"
-                  type="number"
-                  step="0.01"
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+            <Controller
+              name="price"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Preço</FieldLabel>
+                  <Input
+                    className="w-full"
+                    type="number"
+                    step="0.01"
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
 
         <SheetFooter className="lg:mt-4 flex flex-row justify-end">

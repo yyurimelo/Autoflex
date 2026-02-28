@@ -23,7 +23,7 @@ import {
 
 import { LoaderCircle, Plus } from "lucide-react";
 import { useCreateAssociationMutation } from "@/http/hooks/association.hooks";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Combo } from "@/components/ui/combo";
 
 // -----------------------------------------------------------------------------
@@ -81,74 +81,76 @@ export function AssociationCreate() {
         </SheetHeader>
 
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 px-4">
-          <Controller
-            name="productId"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Produto *</FieldLabel>
-                <Combo
-                  className="w-full"
-                  onSelect={field.onChange}
-                  value={field.value}
-                  loading={isLoadingProducts}
-                  itens={products?.map((product) => ({
-                    label: product.name,
-                    value: String(product.id),
-                  }))}
-                  placeholder="Selecione um produto"
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldGroup>
+            <Controller
+              name="productId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Produto *</FieldLabel>
+                  <Combo
+                    className="w-full"
+                    onSelect={field.onChange}
+                    value={field.value}
+                    loading={isLoadingProducts}
+                    itens={products?.map((product) => ({
+                      label: product.name,
+                      value: String(product.id),
+                    }))}
+                    placeholder="Selecione um produto"
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="rawMaterialId"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Matéria Prima *</FieldLabel>
-                <Combo
-                  className="w-full"
-                  onSelect={field.onChange}
-                  value={field.value}
-                  loading={isLoadingRawMaterials}
-                  itens={rawMaterials?.map((rawMaterial) => ({
-                    label: rawMaterial.name,
-                    value: String(rawMaterial.id),
-                  }))}
-                  placeholder="Selecione uma matéria prima"
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+            <Controller
+              name="rawMaterialId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Matéria Prima *</FieldLabel>
+                  <Combo
+                    className="w-full"
+                    onSelect={field.onChange}
+                    value={field.value}
+                    loading={isLoadingRawMaterials}
+                    itens={rawMaterials?.map((rawMaterial) => ({
+                      label: rawMaterial.name,
+                      value: String(rawMaterial.id),
+                    }))}
+                    placeholder="Selecione uma matéria prima"
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="requiredQuantity"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Quantidade Requerida *</FieldLabel>
-                <Input
-                  type="number"
-                  min={1}
-                  {...field}
-                  onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+            <Controller
+              name="requiredQuantity"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Quantidade Requerida *</FieldLabel>
+                  <Input
+                    type="number"
+                    min={1}
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
 
         </form>
 

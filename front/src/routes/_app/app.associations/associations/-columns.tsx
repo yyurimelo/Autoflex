@@ -4,19 +4,19 @@ import { AssociationActions } from "./-actions";
 
 export const associationColumns: ColumnDef<AssociationDataModel>[] = [
   {
-    accessorKey: "product.name",
+    accessorKey: "product.id",
     header: "Produto",
     cell: ({ row }) => row.original.product.name || "-",
-  },
-  {
-    accessorKey: "rawMaterial.name",
-    header: "Matéria Prima",
-    cell: ({ row }) => row.original.rawMaterial.name || "-",
   },
   {
     accessorKey: "requiredQuantity",
     header: "Quantidade Requerida",
     cell: ({ row }) => row.original.requiredQuantity || "-",
+  },
+  {
+    accessorKey: "rawMaterial.id",
+    header: "Matéria Prima",
+    cell: ({ row }) => row.original.rawMaterial.name || "-",
   },
   {
     accessorKey: "rawMaterial.stockQuantity",
