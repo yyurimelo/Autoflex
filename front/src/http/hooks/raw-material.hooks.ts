@@ -50,6 +50,7 @@ export const useDeleteRawMaterialMutation = (
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["raw-materials"] });
       await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
+      await queryClient.invalidateQueries({ queryKey: ["associations"] });
       toast.success("Matéria-prima deletada com sucesso!");
     },
     onError: (error: any) => {

@@ -50,6 +50,7 @@ export const useDeleteProductMutation = (
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["products"] });
       await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
+      await queryClient.invalidateQueries({ queryKey: ["associations"] });
       toast.success("Produto deletado com sucesso!");
     },
     onError: (error: any) => {
