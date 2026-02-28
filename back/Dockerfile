@@ -1,21 +1,12 @@
 FROM maven:3.9.4-openjdk-21 AS build
-
 WORKDIR /app
-
 COPY pom.xml .
-
 RUN mvn dependency:go-offline -B
-
-COPY src ./src
-
+COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jre-slim
-
 WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
+COPY --from=build /app/target/myapp-*.jar app.jar
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
