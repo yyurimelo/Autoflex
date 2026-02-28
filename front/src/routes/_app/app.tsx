@@ -5,6 +5,13 @@ import { Package, ToolCase, Workflow } from 'lucide-react';
 
 export const Route = createFileRoute('/_app/app')({
   component: SettingsLayout,
+  head: () => ({
+    meta: [
+      {
+        title: 'Autoflex'
+      },
+    ],
+  }),
 })
 
 interface TabButtonProps {
