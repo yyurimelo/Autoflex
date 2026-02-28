@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_app/app/product/')({
   component: Product,
 })
 
-function Product() {
+export function Product() {
   const { pageSize, setSize } = useGlobalPageSize();
 
   const { filters, setPage } = useScopedFilters("products");

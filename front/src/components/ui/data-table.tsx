@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { DataTablePagination } from "./pagination"
+import { DataTablePagination } from "./data-table-pagination"
 import { DataTableSkeleton } from "./data-table-skeleton"
 
 // ---------------------------------------------------------------
