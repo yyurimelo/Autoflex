@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/mode-toggle';
 import { cn } from '@/lib/utils';
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { Package, ToolCase, Workflow } from 'lucide-react';
@@ -35,28 +36,33 @@ function TabButton({ to, icon: Icon, children }: TabButtonProps) {
 function SettingsLayout() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 lg:p-6">
-      <div className="w-full max-w-6xl">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <nav className="flex flex-row lg:flex-col lg:w-64 lg:shrink-0 overflow-x-auto lg:overflow-x-visible">
-            <div className='border rounded-md p-2 space-y-1 w-full'>
-              <TabButton to="/app/product" icon={Package}>
-                Produtos
-              </TabButton>
-              <TabButton to='/app/raw-material' icon={ToolCase}>
-                Matéria prima
-              </TabButton>
-              <TabButton to='/app/associations' icon={Workflow}>
-                Associações
-              </TabButton>
-            </div>
-          </nav>
+    <>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 lg:p-6">
+        <div className="w-full max-w-6xl space-y-2">
+          <header className='flex items-center justify-end w-full'>
+            <ModeToggle />
+          </header>
+          <div className="flex flex-col lg:flex-row gap-4">
+            <nav className="flex flex-row lg:flex-col lg:w-64 lg:shrink-0 overflow-x-auto lg:overflow-x-visible">
+              <div className='border rounded-md p-2 space-y-1 w-full'>
+                <TabButton to="/app/product" icon={Package}>
+                  Produtos
+                </TabButton>
+                <TabButton to='/app/raw-material' icon={ToolCase}>
+                  Matéria prima
+                </TabButton>
+                <TabButton to='/app/associations' icon={Workflow}>
+                  Associações
+                </TabButton>
+              </div>
+            </nav>
 
-          <main className="flex-1 min-w-0 border rounded-md p-4">
-            <Outlet />
-          </main>
+            <main className="flex-1 min-w-0 border rounded-md p-4">
+              <Outlet />
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
