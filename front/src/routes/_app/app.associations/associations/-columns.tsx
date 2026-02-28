@@ -15,7 +15,7 @@ export const associationColumns: ColumnDef<AssociationDataModel>[] = [
   },
   {
     accessorKey: "rawMaterial.id",
-    header: "Matéria Prima",
+    header: "Matéria-prima",
     cell: ({ row }) => row.original.rawMaterial.name || "-",
   },
   {

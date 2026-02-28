@@ -30,8 +30,8 @@ export function FiltersTags({ filters, onRemove, isTop }: Props) {
       )}
     >
       <div className="flex items-center gap-1">
-        <Funnel className="size-5 text-primary" />
-        <h3 className="font-semibold text-md">Filtro(s):</h3>
+        <Funnel className="size-4 text-primary" />
+        <h3 className="font-semibold text-sm">Filtro(s):</h3>
       </div>
 
       <div className="flex flex-wrap gap-2">

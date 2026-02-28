@@ -31,7 +31,7 @@ function Associations() {
 
   return (
     <>
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold">{tab === "grid" ? "Associações" : "Sugestões"}</h1>
           <span className="text-base text-muted-foreground">
@@ -48,8 +48,8 @@ function Associations() {
       </header>
 
       <Tabs defaultValue={"grid"} value={tab ?? defaultTab}>
-        <ScrollArea className="grid">
-          <TabsList>
+        <ScrollArea className="grid border-b">
+          <TabsList variant={"line"}>
             <TabsTrigger value="grid" onClick={() => handleChangeTab("grid")}>
               <Grid className="w-4 h-4 mr-2" />
               Grid

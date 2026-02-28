@@ -49,7 +49,7 @@ function SettingsLayout() {
                   Produtos
                 </TabButton>
                 <TabButton to='/app/raw-material' icon={ToolCase}>
-                  Matéria prima
+                  Matérias-primas
                 </TabButton>
                 <TabButton to='/app/associations' icon={Workflow}>
                   Associações

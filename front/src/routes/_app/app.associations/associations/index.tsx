@@ -44,7 +44,9 @@ export function AssociationsGrid() {
 
   return (
     <>
-      <AssociationFiltersTag />
+      <div className='mt-4'>
+        <AssociationFiltersTag />
+      </div>
 
       <div className="grid grid-cols-1 mt-6">
         <DataTable
