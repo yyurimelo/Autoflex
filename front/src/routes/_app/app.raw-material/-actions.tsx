@@ -19,7 +19,7 @@ import type { RawMaterialDataModel } from "@/@types/raw-material/RawMaterialData
 
 // hooks
 import { useDeleteRawMaterialMutation } from "@/http/hooks/raw-material.hooks";
-import { RawMaterialUpdate } from "./update";
+import { RawMaterialUpdate } from "./-update";
 
 // -----------------------------------------------------------------------------
 

@@ -19,7 +19,7 @@ import type { ProductDataModel } from "@/@types/product/ProductDataModel";
 
 // hooks
 import { useDeleteProductMutation } from "@/http/hooks/product.hooks";
-import { ProductUpdate } from "./update";
+import { ProductUpdate } from "./-update";
 
 // -----------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 // icons
 import type { ProductDataModel } from "@/@types/product/ProductDataModel";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ProductActions } from "./actions";
+import { ProductActions } from "./-actions";
 
 function formatPrice(value: string | number | undefined) {
   if (value === undefined) return "-";

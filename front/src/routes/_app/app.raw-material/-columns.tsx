@@ -1,7 +1,7 @@
 // icons
 import type { RawMaterialDataModel } from "@/@types/raw-material/RawMaterialDataModel";
 import type { ColumnDef } from "@tanstack/react-table";
-import { RawMaterialActions } from "./actions";
+import { RawMaterialActions } from "./-actions";
 
 function formatQuantity(value: number | undefined) {
   if (value === undefined) return "-";

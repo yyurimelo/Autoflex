@@ -1,13 +1,13 @@
 import { useProductPaginationQuery } from '@/http/hooks/product.hooks';
 import { createFileRoute } from '@tanstack/react-router';
 import { getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { columns } from './columns';
+import { columns } from './-columns';
 import { DataTable } from '@/components/ui/data-table';
-import { ProductCreate } from './create';
+import { ProductCreate } from './-create';
 import { useGlobalPageSize } from '@/hooks/use-global-page-size';
-import { ProductFilters } from './filters';
+import { ProductFilters } from './-filters';
 import { useScopedFilters } from '@/hooks/use-scoped-filters';
-import { ProductFiltersTag } from './filters-tag';
+import { ProductFiltersTag } from './-filters-tag';
 
 export const Route = createFileRoute('/_app/app/product/')({
   component: Product,

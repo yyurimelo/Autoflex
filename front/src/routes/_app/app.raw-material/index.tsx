@@ -1,13 +1,13 @@
 import { useRawMaterialPaginationQuery } from '@/http/hooks/raw-material.hooks';
 import { createFileRoute } from '@tanstack/react-router';
 import { getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { columns } from './columns';
+import { columns } from './-columns';
 import { DataTable } from '@/components/ui/data-table';
-import { RawMaterialCreate } from './create';
+import { RawMaterialCreate } from './-create';
 import { useGlobalPageSize } from '@/hooks/use-global-page-size';
-import { RawMaterialFilters } from './filters';
+import { RawMaterialFilters } from './-filters';
 import { useScopedFilters } from '@/hooks/use-scoped-filters';
-import { RawMaterialFiltersTag } from './filters-tag';
+import { RawMaterialFiltersTag } from './-filters-tag';
 
 export const Route = createFileRoute('/_app/app/raw-material/')({
   component: RawMaterial,
