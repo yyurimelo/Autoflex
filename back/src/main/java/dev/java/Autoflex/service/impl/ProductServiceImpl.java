@@ -15,7 +15,7 @@ import dev.java.Autoflex.service.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    
+
     private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
@@ -27,16 +27,16 @@ public class ProductServiceImpl implements ProductService {
         if ((product.getName() == null || product.getName().isBlank()) || (product.getPrice() == null)) {
             throw new InvalidProductException();
         }
-        
+
         return productRepository.save(product);
     }
 
-@Override
+    @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
-@Override
+    @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(Long id) {
         return productRepository.findById(id)
-            .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(ProductNotFoundException::new);
     }
 
     @Override

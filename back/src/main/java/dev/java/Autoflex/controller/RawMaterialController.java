@@ -26,16 +26,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
-
 @Tag(name = "RawMaterialController")
 @RestController
 @RequestMapping("/api/v1/raw_material")
 public class RawMaterialController {
     private final RawMaterialService rawMaterialService;
     private final ModelMapper modelMapper;
-    
+
     public RawMaterialController(RawMaterialService rawMaterialService, ModelMapper modelMapper) {
         this.rawMaterialService = rawMaterialService;
         this.modelMapper = modelMapper;
@@ -43,14 +40,14 @@ public class RawMaterialController {
 
     @PostMapping("create")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Matéria-prima criada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+            @ApiResponse(responseCode = "201", description = "Matéria-prima criada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<RawMaterialResponse> create(@RequestBody CreateUpdateRawMaterialRequest request) {
         RawMaterial rawMaterial = convertToEntity(request);
         RawMaterial saved = rawMaterialService.save(rawMaterial);
         RawMaterialResponse response = convertToResponseMap(saved);
-        
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -58,9 +55,9 @@ public class RawMaterialController {
 
     @PutMapping("update/{id}")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Matéria-prima atualizada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+            @ApiResponse(responseCode = "204", description = "Matéria-prima atualizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<RawMaterialResponse> update(
             @PathVariable Long id,
@@ -75,21 +72,20 @@ public class RawMaterialController {
 
     @GetMapping("get/all")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista de matérias-primas retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista de matérias-primas retornada com sucesso")
     })
-    public ResponseEntity<List<RawMaterialResponse>> getAll(){
-        List<RawMaterialResponse> response =
-                rawMaterialService.findAll()
-                        .stream()
-                        .map(this::convertToResponseMap)
-                        .toList();
+    public ResponseEntity<List<RawMaterialResponse>> getAll() {
+        List<RawMaterialResponse> response = rawMaterialService.findAll()
+                .stream()
+                .map(this::convertToResponseMap)
+                .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("get/all/paginated")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista paginada de matérias-primas retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista paginada de matérias-primas retornada com sucesso")
     })
     public ResponseEntity<Page<RawMaterialResponse>> getAllPaginated(
             @RequestBody RawMaterialFilter filter,
@@ -102,25 +98,25 @@ public class RawMaterialController {
 
     @GetMapping("get/by/{id}")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Matéria-prima encontrada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada")
+            @ApiResponse(responseCode = "200", description = "Matéria-prima encontrada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada")
     })
-    public ResponseEntity<RawMaterialResponse> findById(@PathVariable Long id){
+    public ResponseEntity<RawMaterialResponse> findById(@PathVariable Long id) {
         RawMaterial rawMaterial = rawMaterialService.findById(id);
         RawMaterialResponse response = convertToResponseMap(rawMaterial);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    
+
     @DeleteMapping("delete")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Matéria-prima excluída com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada")
+            @ApiResponse(responseCode = "204", description = "Matéria-prima excluída com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Matéria-prima não encontrada")
     })
-    public ResponseEntity<Void> deleteById(@RequestParam Long id){
+    public ResponseEntity<Void> deleteById(@RequestParam Long id) {
         rawMaterialService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    
+
     private RawMaterial convertToEntity(CreateUpdateRawMaterialRequest request) {
         return modelMapper.map(request, RawMaterial.class);
     }

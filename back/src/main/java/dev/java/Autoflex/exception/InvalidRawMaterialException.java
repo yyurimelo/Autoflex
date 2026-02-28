@@ -1,7 +1,7 @@
 package dev.java.Autoflex.exception;
 
 public class InvalidRawMaterialException extends RuntimeException {
-    public InvalidRawMaterialException(){
+    public InvalidRawMaterialException() {
         super("Nome ou quantidade em estoque inválido(s)");
     }
 

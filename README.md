@@ -183,7 +183,8 @@ No package.json raiz:
 
 ## Observações
 
-- O frontend atualmente está em estado inicial com o template React padrão
-- O backend já possui estrutura completa para gerenciamento de produtos e matérias-primas
+- O frontend está completamente desenvolvido com interface moderna e responsiva para gerenciamento completo do sistema
+- O backend possui estrutura completa para gerenciamento de produtos, matérias-primas e sugestões de produção
 - A configuração do banco de dados utiliza PostgreSQL com schema update automático
 - O projeto está configurado para desenvolvimento com hot-reload em ambas as aplicações
+- Sistema pronto para produção com documentação da API disponível via Swagger UI

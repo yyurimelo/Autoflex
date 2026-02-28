@@ -13,7 +13,7 @@ public class ProductionSuggestionFilterRequest {
     public ProductionSuggestionFilterRequest() {
     }
 
-    public ProductionSuggestionFilterRequest(Long productId, String productName, Integer minProducibleQuantity, 
+    public ProductionSuggestionFilterRequest(Long productId, String productName, Integer minProducibleQuantity,
             Integer maxProducibleQuantity, int page, int size, String sortBy, String sortDirection) {
         this.productId = productId;
         this.productName = productName;

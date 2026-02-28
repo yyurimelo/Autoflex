@@ -73,11 +73,13 @@ public class ProductRawMaterial {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ProductRawMaterial that = (ProductRawMaterial) o;
         return Objects.equals(product, that.product) &&
-               Objects.equals(rawMaterial, that.rawMaterial);
+                Objects.equals(rawMaterial, that.rawMaterial);
     }
 
     @Override

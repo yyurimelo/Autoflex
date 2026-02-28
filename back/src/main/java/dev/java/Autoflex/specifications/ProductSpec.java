@@ -6,17 +6,16 @@ import org.springframework.data.jpa.domain.Specification;
 import dev.java.Autoflex.model.Product;
 
 public class ProductSpec {
-    
+
     public static Specification<Product> nameContains(String name) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(name)) {
                 return null;
             }
-            
+
             return builder.like(
-                builder.upper(root.get("name")),
-                "%" + name.toUpperCase() + "%"
-            );
+                    builder.upper(root.get("name")),
+                    "%" + name.toUpperCase() + "%");
         };
     }
 
@@ -25,11 +24,10 @@ public class ProductSpec {
             if (ObjectUtils.isEmpty(minPrice)) {
                 return null;
             }
-            
+
             return builder.greaterThanOrEqualTo(
-                root.get("price"),
-                minPrice
-            );
+                    root.get("price"),
+                    minPrice);
         };
     }
 
@@ -38,11 +36,10 @@ public class ProductSpec {
             if (ObjectUtils.isEmpty(maxPrice)) {
                 return null;
             }
-            
+
             return builder.lessThanOrEqualTo(
-                root.get("price"),
-                maxPrice
-            );
+                    root.get("price"),
+                    maxPrice);
         };
     }
 
@@ -51,37 +48,34 @@ public class ProductSpec {
             if (ObjectUtils.isEmpty(minProducibleQuantity)) {
                 return null;
             }
-            
+
             return builder.greaterThanOrEqualTo(
-                root.get("producibleQuantity"),
-                minProducibleQuantity
-            );
+                    root.get("producibleQuantity"),
+                    minProducibleQuantity);
         };
     }
 
-public static Specification<Product> producibleQuantityLessThanOrEqual(Integer maxProducibleQuantity) {
+    public static Specification<Product> producibleQuantityLessThanOrEqual(Integer maxProducibleQuantity) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(maxProducibleQuantity)) {
                 return null;
             }
-            
+
             return builder.lessThanOrEqualTo(
-                root.get("producibleQuantity"),
-                maxProducibleQuantity
-            );
+                    root.get("producibleQuantity"),
+                    maxProducibleQuantity);
         };
     }
-    
+
     public static Specification<Product> priceEquals(Double price) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(price)) {
                 return null;
             }
-            
+
             return builder.equal(
-                root.get("price"),
-                price
-            );
+                    root.get("price"),
+                    price);
         };
     }
 }

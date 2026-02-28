@@ -10,7 +10,8 @@ public class CreateUpdateRawMaterialRequest {
     @NotNull
     private Integer stockQuantity;
 
-    public CreateUpdateRawMaterialRequest() {}
+    public CreateUpdateRawMaterialRequest() {
+    }
 
     public CreateUpdateRawMaterialRequest(@NotNull String name, @NotNull Integer stockQuantity) {
         this.name = name;

@@ -6,7 +6,8 @@ public class RawMaterialResponse {
     private String name;
     private Integer stockQuantity;
 
-    public RawMaterialResponse() {}
+    public RawMaterialResponse() {
+    }
 
     public RawMaterialResponse(Long id, String name, Integer stockQuantity) {
         this.id = id;

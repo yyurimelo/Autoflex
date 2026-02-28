@@ -15,7 +15,7 @@ import dev.java.Autoflex.service.RawMaterialService;
 
 @Service
 public class RawMaterialServiceImpl implements RawMaterialService {
-    
+
     private final RawMaterialRepository rawMaterialRepository;
 
     public RawMaterialServiceImpl(RawMaterialRepository rawMaterialRepository) {
@@ -24,10 +24,11 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     public RawMaterial save(RawMaterial rawMaterial) {
-        if ((rawMaterial.getName() == null || rawMaterial.getName().isBlank()) || (rawMaterial.getStockQuantity() == null)) {
+        if ((rawMaterial.getName() == null || rawMaterial.getName().isBlank())
+                || (rawMaterial.getStockQuantity() == null)) {
             throw new InvalidRawMaterialException();
         }
-        
+
         return rawMaterialRepository.save(rawMaterial);
     }
 
@@ -49,7 +50,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     @Override
     public RawMaterial findById(Long id) {
         return rawMaterialRepository.findById(id)
-            .orElseThrow(RawMaterialNotFoundException::new);
+                .orElseThrow(RawMaterialNotFoundException::new);
     }
 
     @Override

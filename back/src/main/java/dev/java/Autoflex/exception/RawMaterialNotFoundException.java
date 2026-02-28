@@ -1,7 +1,7 @@
 package dev.java.Autoflex.exception;
 
 public class RawMaterialNotFoundException extends RuntimeException {
-    public RawMaterialNotFoundException(){
+    public RawMaterialNotFoundException() {
         super("Matéria-prima não encontrada");
     }
 

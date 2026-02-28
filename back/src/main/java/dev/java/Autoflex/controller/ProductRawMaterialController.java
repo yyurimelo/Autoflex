@@ -33,121 +33,123 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/v1/product-raw-material")
 public class ProductRawMaterialController {
 
-    private final ProductRawMaterialService productRawMaterialService;
-    private final ModelMapper modelMapper;
+        private final ProductRawMaterialService productRawMaterialService;
+        private final ModelMapper modelMapper;
 
-    public ProductRawMaterialController(ProductRawMaterialService productRawMaterialService, ModelMapper modelMapper) {
-        this.productRawMaterialService = productRawMaterialService;
-        this.modelMapper = modelMapper;
-    }
+        public ProductRawMaterialController(ProductRawMaterialService productRawMaterialService,
+                        ModelMapper modelMapper) {
+                this.productRawMaterialService = productRawMaterialService;
+                this.modelMapper = modelMapper;
+        }
 
-    @PostMapping("create")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Associação entre produto e matéria-prima criada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-            @ApiResponse(responseCode = "404", description = "Produto ou matéria-prima não encontrado"),
-            @ApiResponse(responseCode = "409", description = "Associação entre produto e matéria-prima já existe")
-    })
-    public ResponseEntity<ProductRawMaterialResponse> create(
-            @RequestBody CreateUpdateProductRawMaterialRequest request) {
-        ProductRawMaterial productRawMaterial = convertToEntity(request);
-        ProductRawMaterial saved = productRawMaterialService.create(productRawMaterial);
+        @PostMapping("create")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "201", description = "Associação entre produto e matéria-prima criada com sucesso"),
+                        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+                        @ApiResponse(responseCode = "404", description = "Produto ou matéria-prima não encontrado"),
+                        @ApiResponse(responseCode = "409", description = "Associação entre produto e matéria-prima já existe")
+        })
+        public ResponseEntity<ProductRawMaterialResponse> create(
+                        @RequestBody CreateUpdateProductRawMaterialRequest request) {
+                ProductRawMaterial productRawMaterial = convertToEntity(request);
+                ProductRawMaterial saved = productRawMaterialService.create(productRawMaterial);
 
-        ProductRawMaterialResponse response = convertToResponseMap(saved);
+                ProductRawMaterialResponse response = convertToResponseMap(saved);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
-    }
+                return ResponseEntity
+                                .status(HttpStatus.CREATED)
+                                .body(response);
+        }
 
-    @PostMapping("/get/all/paginated")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista filtrada e paginada de associações entre produtos e matérias-primas retornada com sucesso")
-    })
-    public ResponseEntity<Page<ProductRawMaterialResponse>> list(
-            @RequestBody ProductRawMaterialFilter filter,
-            Pageable pageable) {
+        @PostMapping("/get/all/paginated")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "Lista filtrada e paginada de associações entre produtos e matérias-primas retornada com sucesso")
+        })
+        public ResponseEntity<Page<ProductRawMaterialResponse>> list(
+                        @RequestBody ProductRawMaterialFilter filter,
+                        Pageable pageable) {
 
-        Page<ProductRawMaterial> page = productRawMaterialService.findByFilters(filter, pageable);
+                Page<ProductRawMaterial> page = productRawMaterialService.findByFilters(filter, pageable);
 
-        Page<ProductRawMaterialResponse> response = page.map(this::convertToResponseMap);
+                Page<ProductRawMaterialResponse> response = page.map(this::convertToResponseMap);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
+                return ResponseEntity
+                                .status(HttpStatus.OK)
+                                .body(response);
+        }
 
-    @GetMapping("get/{id}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Associação entre produto e matéria-prima encontrada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Associação não encontrada")
-    })
-    public ResponseEntity<ProductRawMaterialResponse> findById(@PathVariable Long id) {
-        ProductRawMaterial productRawMaterial = productRawMaterialService.findById(id);
-        ProductRawMaterialResponse response = convertToResponseMap(productRawMaterial);
+        @GetMapping("get/{id}")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "Associação entre produto e matéria-prima encontrada com sucesso"),
+                        @ApiResponse(responseCode = "404", description = "Associação não encontrada")
+        })
+        public ResponseEntity<ProductRawMaterialResponse> findById(@PathVariable Long id) {
+                ProductRawMaterial productRawMaterial = productRawMaterialService.findById(id);
+                ProductRawMaterialResponse response = convertToResponseMap(productRawMaterial);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
+                return ResponseEntity
+                                .status(HttpStatus.OK)
+                                .body(response);
+        }
 
-    @PutMapping("update/{id}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Associação entre produto e matéria-prima atualizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-            @ApiResponse(responseCode = "404", description = "Associação não encontrada"),
-            @ApiResponse(responseCode = "409", description = "Associação entre produto e matéria-prima já existe")
-    })
-    public ResponseEntity<Void> update(
-            @PathVariable Long id,
-            @RequestBody CreateUpdateProductRawMaterialRequest request) {
-        
-        ProductRawMaterial productRawMaterial = convertToEntity(request);
-        productRawMaterial.setId(id);
-        productRawMaterialService.update(productRawMaterial);
-        
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+        @PutMapping("update/{id}")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "204", description = "Associação entre produto e matéria-prima atualizada com sucesso"),
+                        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+                        @ApiResponse(responseCode = "404", description = "Associação não encontrada"),
+                        @ApiResponse(responseCode = "409", description = "Associação entre produto e matéria-prima já existe")
+        })
+        public ResponseEntity<Void> update(
+                        @PathVariable Long id,
+                        @RequestBody CreateUpdateProductRawMaterialRequest request) {
 
-    @DeleteMapping("delete")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Associação entre produto e matéria-prima excluída com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Associação não encontrada")
-    })
-    public ResponseEntity<Void> deleteById(@RequestParam Long id) {
-        productRawMaterialService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+                ProductRawMaterial productRawMaterial = convertToEntity(request);
+                productRawMaterial.setId(id);
+                productRawMaterialService.update(productRawMaterial);
 
-    private ProductRawMaterial convertToEntity(CreateUpdateProductRawMaterialRequest request) {
-        ProductRawMaterial productRawMaterial = new ProductRawMaterial();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
 
-        Product product = new Product();
-        product.setId(request.getProductId());
-        productRawMaterial.setProduct(product);
+        @DeleteMapping("delete")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "204", description = "Associação entre produto e matéria-prima excluída com sucesso"),
+                        @ApiResponse(responseCode = "404", description = "Associação não encontrada")
+        })
+        public ResponseEntity<Void> deleteById(@RequestParam Long id) {
+                productRawMaterialService.deleteById(id);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
 
-        RawMaterial rawMaterial = new RawMaterial();
-        rawMaterial.setId(request.getRawMaterialId());
-        productRawMaterial.setRawMaterial(rawMaterial);
+        private ProductRawMaterial convertToEntity(CreateUpdateProductRawMaterialRequest request) {
+                ProductRawMaterial productRawMaterial = new ProductRawMaterial();
 
-        productRawMaterial.setRequiredQuantity(request.getRequiredQuantity());
+                Product product = new Product();
+                product.setId(request.getProductId());
+                productRawMaterial.setProduct(product);
 
-        return productRawMaterial;
-    }
+                RawMaterial rawMaterial = new RawMaterial();
+                rawMaterial.setId(request.getRawMaterialId());
+                productRawMaterial.setRawMaterial(rawMaterial);
 
-    private ProductRawMaterialResponse convertToResponseMap(ProductRawMaterial productRawMaterial) {
-        ProductRawMaterialResponse response = new ProductRawMaterialResponse();
+                productRawMaterial.setRequiredQuantity(request.getRequiredQuantity());
 
-        response.setId(productRawMaterial.getId());
-        response.setRequiredQuantity(productRawMaterial.getRequiredQuantity());
+                return productRawMaterial;
+        }
 
-        ProductResponse productResponse = modelMapper.map(productRawMaterial.getProduct(), ProductResponse.class);
-        response.setProduct(productResponse);
+        private ProductRawMaterialResponse convertToResponseMap(ProductRawMaterial productRawMaterial) {
+                ProductRawMaterialResponse response = new ProductRawMaterialResponse();
 
-        RawMaterialResponse rawMaterialResponse = modelMapper.map(productRawMaterial.getRawMaterial(),
-                RawMaterialResponse.class);
-        response.setRawMaterial(rawMaterialResponse);
+                response.setId(productRawMaterial.getId());
+                response.setRequiredQuantity(productRawMaterial.getRequiredQuantity());
 
-        return response;
-    }
+                ProductResponse productResponse = modelMapper.map(productRawMaterial.getProduct(),
+                                ProductResponse.class);
+                response.setProduct(productResponse);
+
+                RawMaterialResponse rawMaterialResponse = modelMapper.map(productRawMaterial.getRawMaterial(),
+                                RawMaterialResponse.class);
+                response.setRawMaterial(rawMaterialResponse);
+
+                return response;
+        }
 }

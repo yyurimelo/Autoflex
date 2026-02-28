@@ -15,7 +15,7 @@ public class ProductRawMaterialPageResponse {
     public ProductRawMaterialPageResponse() {
     }
 
-    public ProductRawMaterialPageResponse(List<ProductRawMaterialResponse> content, int pageNumber, 
+    public ProductRawMaterialPageResponse(List<ProductRawMaterialResponse> content, int pageNumber,
             int pageSize, long totalElements, int totalPages, boolean first, boolean last, boolean empty) {
         this.content = content;
         this.pageNumber = pageNumber;

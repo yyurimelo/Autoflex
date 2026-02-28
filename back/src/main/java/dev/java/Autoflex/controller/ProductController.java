@@ -26,16 +26,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
-
 @Tag(name = "ProductController")
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
     private final ProductService productService;
     private final ModelMapper modelMapper;
-    
+
     public ProductController(ProductService productService, ModelMapper modelMapper) {
         this.productService = productService;
         this.modelMapper = modelMapper;
@@ -43,14 +40,14 @@ public class ProductController {
 
     @PostMapping("create")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+            @ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<ProductResponse> create(@RequestBody CreateUpdateProductRequest request) {
         Product product = convertToEntity(request);
         Product saved = productService.save(product);
         ProductResponse response = convertToResponseMap(saved);
-        
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
@@ -58,9 +55,9 @@ public class ProductController {
 
     @PutMapping("update/{id}")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Produto atualizado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+            @ApiResponse(responseCode = "204", description = "Produto atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
@@ -75,21 +72,20 @@ public class ProductController {
 
     @GetMapping("get/all")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso")
     })
-    public ResponseEntity<List<ProductResponse>> getAll(){
-        List<ProductResponse> response =
-                productService.findAll()
-                        .stream()
-                        .map(this::convertToResponseMap)
-                        .toList();
+    public ResponseEntity<List<ProductResponse>> getAll() {
+        List<ProductResponse> response = productService.findAll()
+                .stream()
+                .map(this::convertToResponseMap)
+                .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("get/all/paginated")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista paginada de produtos retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista paginada de produtos retornada com sucesso")
     })
     public ResponseEntity<Page<ProductResponse>> getAllPaginated(
             @RequestBody ProductFilter filter,
@@ -103,25 +99,25 @@ public class ProductController {
 
     @GetMapping("get/by/{id}")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+            @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ResponseEntity<ProductResponse> findById(@PathVariable Long id){
+    public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
         Product product = productService.findById(id);
         ProductResponse response = convertToResponseMap(product);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-    
+
     @DeleteMapping("delete")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+            @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ResponseEntity<Void> deleteById(@RequestParam Long id){
+    public ResponseEntity<Void> deleteById(@RequestParam Long id) {
         productService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    
+
     private Product convertToEntity(CreateUpdateProductRequest request) {
         return modelMapper.map(request, Product.class);
     }

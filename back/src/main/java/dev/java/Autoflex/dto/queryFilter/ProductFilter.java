@@ -12,9 +12,9 @@ public class ProductFilter {
     private String name;
     private Double price;
 
-    public Specification<Product> toSpecification(){
+    public Specification<Product> toSpecification() {
         return Specification
-            .where(ProductSpec.nameContains(name))
-            .and(ProductSpec.priceEquals(price));
+                .where(ProductSpec.nameContains(name))
+                .and(ProductSpec.priceEquals(price));
     }
 }

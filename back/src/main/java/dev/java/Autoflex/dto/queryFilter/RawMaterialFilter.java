@@ -12,9 +12,9 @@ public class RawMaterialFilter {
     private String name;
     private Integer stockQuantity;
 
-    public Specification<RawMaterial> toSpecification(){
+    public Specification<RawMaterial> toSpecification() {
         return Specification
-            .where(RawMaterialSpec.nameContains(name))
-            .and(RawMaterialSpec.stockQuantityEquals(stockQuantity));
+                .where(RawMaterialSpec.nameContains(name))
+                .and(RawMaterialSpec.stockQuantityEquals(stockQuantity));
     }
 }

@@ -15,7 +15,7 @@ public class ProductionSuggestionPageResponse {
     public ProductionSuggestionPageResponse() {
     }
 
-    public ProductionSuggestionPageResponse(List<ProductionSuggestionResponse> content, int pageNumber, 
+    public ProductionSuggestionPageResponse(List<ProductionSuggestionResponse> content, int pageNumber,
             int pageSize, long totalElements, int totalPages, boolean first, boolean last, boolean empty) {
         this.content = content;
         this.pageNumber = pageNumber;

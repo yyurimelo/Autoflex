@@ -13,7 +13,7 @@ public interface ProductService {
 
     List<Product> findAll();
 
-Page<Product> findAll(Pageable pageable);
+    Page<Product> findAll(Pageable pageable);
 
     Page<Product> findByFilters(ProductFilter filter, Pageable pageable);
 

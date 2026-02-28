@@ -10,7 +10,8 @@ public class ProductRawMaterialResponse {
     public ProductRawMaterialResponse() {
     }
 
-    public ProductRawMaterialResponse(Long id, ProductResponse product, RawMaterialResponse rawMaterial, Integer requiredQuantity) {
+    public ProductRawMaterialResponse(Long id, ProductResponse product, RawMaterialResponse rawMaterial,
+            Integer requiredQuantity) {
         this.id = id;
         this.product = product;
         this.rawMaterial = rawMaterial;

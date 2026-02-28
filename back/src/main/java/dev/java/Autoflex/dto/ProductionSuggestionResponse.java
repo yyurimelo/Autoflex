@@ -13,7 +13,8 @@ public class ProductionSuggestionResponse {
     public ProductionSuggestionResponse() {
     }
 
-    public ProductionSuggestionResponse(Long productId, String productName, Integer producibleQuantity, BigDecimal unitCost, String limitingMaterial, BigDecimal finalPrice) {
+    public ProductionSuggestionResponse(Long productId, String productName, Integer producibleQuantity,
+            BigDecimal unitCost, String limitingMaterial, BigDecimal finalPrice) {
         this.productId = productId;
         this.productName = productName;
         this.producibleQuantity = producibleQuantity;

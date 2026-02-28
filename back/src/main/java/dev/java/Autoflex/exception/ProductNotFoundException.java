@@ -1,7 +1,7 @@
 package dev.java.Autoflex.exception;
 
 public class ProductNotFoundException extends RuntimeException {
-    public ProductNotFoundException(){
+    public ProductNotFoundException() {
         super("Produto não encontrado");
     }
 

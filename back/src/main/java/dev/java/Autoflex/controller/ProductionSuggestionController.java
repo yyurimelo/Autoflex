@@ -26,7 +26,7 @@ public class ProductionSuggestionController {
 
     @GetMapping("/get/all/paginated")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Lista paginada de sugestões de produção retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista paginada de sugestões de produção retornada com sucesso")
     })
     public ResponseEntity<Page<ProductionSuggestionResponse>> getAllPaginated(Pageable pageable) {
         Page<ProductionSuggestionResponse> response = productionSuggestionService.findProductionSuggestions(pageable);

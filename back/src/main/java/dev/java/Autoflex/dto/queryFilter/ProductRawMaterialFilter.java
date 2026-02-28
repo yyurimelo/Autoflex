@@ -12,9 +12,9 @@ public class ProductRawMaterialFilter {
     private Long productId;
     private Long rawMaterialId;
 
-    public Specification<ProductRawMaterial> toSpecification(){
+    public Specification<ProductRawMaterial> toSpecification() {
         return Specification
-            .where(ProductRawMaterialSpec.productEquals(productId))
-            .and(ProductRawMaterialSpec.rawMaterialEquals(rawMaterialId));
+                .where(ProductRawMaterialSpec.productEquals(productId))
+                .and(ProductRawMaterialSpec.rawMaterialEquals(rawMaterialId));
     }
 }

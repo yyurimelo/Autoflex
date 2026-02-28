@@ -13,7 +13,7 @@ public class ProductRawMaterialFilterRequest {
     public ProductRawMaterialFilterRequest() {
     }
 
-    public ProductRawMaterialFilterRequest(Long productId, Long rawMaterialId, Integer minRequiredQuantity, 
+    public ProductRawMaterialFilterRequest(Long productId, Long rawMaterialId, Integer minRequiredQuantity,
             Integer maxRequiredQuantity, int page, int size, String sortBy, String sortDirection) {
         this.productId = productId;
         this.rawMaterialId = rawMaterialId;
