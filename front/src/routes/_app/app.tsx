@@ -37,7 +37,7 @@ function SettingsLayout() {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 lg:p-6">
+      <div className="flex flex-col items-center justify-center p-4 lg:p-6">
         <div className="w-full max-w-6xl space-y-2">
           <header className='flex items-center justify-end w-full'>
             <ModeToggle />

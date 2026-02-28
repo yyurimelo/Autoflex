@@ -9,14 +9,14 @@ export const associationColumns: ColumnDef<AssociationDataModel>[] = [
     cell: ({ row }) => row.original.product.name || "-",
   },
   {
-    accessorKey: "requiredQuantity",
-    header: "Quantidade Requerida",
-    cell: ({ row }) => row.original.requiredQuantity || "-",
-  },
-  {
     accessorKey: "rawMaterial.id",
     header: "Matéria-prima",
     cell: ({ row }) => row.original.rawMaterial.name || "-",
+  },
+  {
+    accessorKey: "requiredQuantity",
+    header: "Quantidade Requerida",
+    cell: ({ row }) => row.original.requiredQuantity || "-",
   },
   {
     accessorKey: "rawMaterial.stockQuantity",
