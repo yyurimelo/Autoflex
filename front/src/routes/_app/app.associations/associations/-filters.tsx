@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 // hooks
@@ -40,7 +40,7 @@ export function AssociationFilters() {
   const id = useId();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const { setFilter, clearFilters } = useScopedFilters("associations");
+  const { filters, setFilter, clearFilters } = useScopedFilters("associations");
 
   const { data: products, isLoading: isLoadingProducts } = useAllProductsQuery();
   const { data: rawMaterials, isLoading: isLoadingRawMaterials } = useAllRawMaterialsQuery();
@@ -53,9 +53,22 @@ export function AssociationFilters() {
     },
   });
 
+  useEffect(() => {
+    const currentValues = form.getValues();
+    const newValues = {
+      productId: filters.productId ?? "",
+      rawMaterialId: filters.rawMaterialId ?? "",
+    };
+    if (
+      currentValues.productId !== newValues.productId ||
+      currentValues.rawMaterialId !== newValues.rawMaterialId
+    ) {
+      form.reset(newValues);
+    }
+  }, [filters.productId, filters.rawMaterialId, form]);
+
 
   async function handleSubmit(data: FilterAssociationForm) {
-    clearFilters();
 
     if (data.productId) {
       setFilter("productId", data.productId);

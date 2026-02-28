@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 // hooks
@@ -38,27 +38,30 @@ export function RawMaterialFilters() {
   const id = useId();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const { setFilter, clearFilters } = useScopedFilters("raw-materials");
+  const { filters, setFilter, clearFilters } = useScopedFilters("raw-materials");
 
   const form = useForm<FilterRawMaterialForm>({
     resolver: zodResolver(filterRawMaterialForm),
-    defaultValues: {
-      name: "",
-      stockQuantity: "",
-    },
   });
+
+  useEffect(() => {
+    const currentValues = form.getValues();
+    const newValues = {
+      name: filters.name ?? "",
+      stockQuantity: filters.stockQuantity?.toString() ?? "",
+    };
+    if (
+      currentValues.name !== newValues.name ||
+      currentValues.stockQuantity !== newValues.stockQuantity
+    ) {
+      form.reset(newValues);
+    }
+  }, [filters.name, filters.stockQuantity, form]);
 
 
   async function handleSubmit(data: FilterRawMaterialForm) {
-    clearFilters();
-
-    if (data.name) {
-      setFilter("name", data.name);
-    }
-
-    if (data.stockQuantity) {
-      setFilter("stockQuantity", data.stockQuantity);
-    }
+    if (data.name !== filters.name) setFilter("name", data.name);
+    if (data.stockQuantity !== (filters.stockQuantity ?? "")) setFilter("stockQuantity", data.stockQuantity);
 
     setOpen(false);
   }

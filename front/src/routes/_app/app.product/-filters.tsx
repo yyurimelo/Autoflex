@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 // hooks
@@ -38,15 +38,25 @@ export function ProductFilters() {
   const id = useId();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const { setFilter, clearFilters } = useScopedFilters("products");
+  const { filters, setFilter, clearFilters } = useScopedFilters("products");
 
   const form = useForm<FilterProductForm>({
     resolver: zodResolver(filterProductForm),
-    defaultValues: {
-      name: "",
-      price: "",
-    },
   });
+
+  useEffect(() => {
+    const currentValues = form.getValues();
+    const newValues = {
+      name: filters.name ?? "",
+      price: filters.price?.toString() ?? "",
+    };
+    if (
+      currentValues.name !== newValues.name ||
+      currentValues.price !== newValues.price
+    ) {
+      form.reset(newValues);
+    }
+  }, [filters.name, filters.price, form]);
 
 
   async function handleSubmit(data: FilterProductForm) {
