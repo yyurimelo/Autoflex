@@ -28,6 +28,7 @@ export async function createProduct({
 
 export async function getProductsPaginated({
   name,
+  price,
   page,
   size,
 }: ProductFilterModel): Promise<PaginationDataModel<ProductDataModel>> {
@@ -38,6 +39,7 @@ export async function getProductsPaginated({
       API_ENDPOINTS.PRODUCT.GET_ALL_PAGINATED,
       {
         name,
+        price,
       },
       {
         params: {

@@ -1,14 +1,19 @@
 import { FiltersTags, type FilterTagItem } from "@/components/ui/data-filters-tag";
 import { useScopedFilters } from "@/hooks/use-scoped-filters";
 
-export function ProductFiltersTag() {
-  const { filters, removeFilter } = useScopedFilters("products");
+export function RawMaterialFiltersTag() {
+  const { filters, removeFilter } = useScopedFilters("raw-materials");
 
   const filterTags: FilterTagItem[] = [
     {
       text: "Nome",
       alias: "name",
       value: filters.name,
+    },
+    {
+      text: "Quantidade",
+      alias: "stockQuantity",
+      value: filters.stockQuantity,
     },
   ]
 

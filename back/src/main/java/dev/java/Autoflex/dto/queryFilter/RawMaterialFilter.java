@@ -10,13 +10,11 @@ import lombok.Data;
 public class RawMaterialFilter {
 
     private String name;
-    private Integer minStockQuantity;
-    private Integer maxStockQuantity;
+    private Integer stockQuantity;
 
     public Specification<RawMaterial> toSpecification(){
         return Specification
             .where(RawMaterialSpec.nameContains(name))
-            .and(RawMaterialSpec.stockQuantityGreaterThanOrEqual(minStockQuantity))
-            .and(RawMaterialSpec.stockQuantityLessThanOrEqual(maxStockQuantity));
+            .and(RawMaterialSpec.stockQuantityEquals(stockQuantity));
     }
 }

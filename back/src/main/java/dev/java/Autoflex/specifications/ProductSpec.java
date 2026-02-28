@@ -59,7 +59,7 @@ public class ProductSpec {
         };
     }
 
-    public static Specification<Product> producibleQuantityLessThanOrEqual(Integer maxProducibleQuantity) {
+public static Specification<Product> producibleQuantityLessThanOrEqual(Integer maxProducibleQuantity) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(maxProducibleQuantity)) {
                 return null;
@@ -68,6 +68,19 @@ public class ProductSpec {
             return builder.lessThanOrEqualTo(
                 root.get("producibleQuantity"),
                 maxProducibleQuantity
+            );
+        };
+    }
+    
+    public static Specification<Product> priceEquals(Double price) {
+        return (root, query, builder) -> {
+            if (ObjectUtils.isEmpty(price)) {
+                return null;
+            }
+            
+            return builder.equal(
+                root.get("price"),
+                price
             );
         };
     }

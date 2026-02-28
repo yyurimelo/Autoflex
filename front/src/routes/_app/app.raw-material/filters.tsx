@@ -25,33 +25,39 @@ import { useScopedFilters } from "@/hooks/use-scoped-filters";
 
 // -----------------------------------------------------------------------------
 
-const filterProductForm = z.object({
+const filterRawMaterialForm = z.object({
   name: z.string().optional(),
+  stockQuantity: z.string().optional(),
 });
 
-type FilterProductForm = z.infer<typeof filterProductForm>;
+type FilterRawMaterialForm = z.infer<typeof filterRawMaterialForm>;
 
 // -----------------------------------------------------------------------------
 
-export function ProductFilters() {
+export function RawMaterialFilters() {
   const id = useId();
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const { setFilter, clearFilters } = useScopedFilters("products");
+  const { setFilter, clearFilters } = useScopedFilters("raw-materials");
 
-  const form = useForm<FilterProductForm>({
-    resolver: zodResolver(filterProductForm),
+  const form = useForm<FilterRawMaterialForm>({
+    resolver: zodResolver(filterRawMaterialForm),
     defaultValues: {
       name: "",
+      stockQuantity: "",
     },
   });
 
 
-  async function handleSubmit(data: FilterProductForm) {
+  async function handleSubmit(data: FilterRawMaterialForm) {
     clearFilters();
 
     if (data.name) {
       setFilter("name", data.name);
+    }
+
+    if (data.stockQuantity) {
+      setFilter("stockQuantity", data.stockQuantity);
     }
 
     setOpen(false);
@@ -84,6 +90,26 @@ export function ProductFilters() {
                 <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
                 <Input
                   className="w-full"
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                />
+                {fieldState.error && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
+          <Controller
+            name="stockQuantity"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Quantidade</FieldLabel>
+                <Input
+                  className="w-full"
+                  type="number"
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}

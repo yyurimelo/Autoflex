@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
-import { MessageSquare, Package } from 'lucide-react';
+import { Package, ToolCase } from 'lucide-react';
 
 export const Route = createFileRoute('/_app/app')({
   component: SettingsLayout,
@@ -43,7 +43,7 @@ function SettingsLayout() {
               <TabButton to="/app/product" icon={Package}>
                 Produtos
               </TabButton>
-              <TabButton to='/sections/raw-material' icon={MessageSquare}>
+              <TabButton to='/app/raw-material' icon={ToolCase}>
                 Matéria prima
               </TabButton>
             </div>

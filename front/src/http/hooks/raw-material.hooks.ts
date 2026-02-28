@@ -1,18 +1,18 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createProduct, getProductsPaginated, removeProduct, updateProduct } from "../services/product.service";
+import { createRawMaterial, getRawMaterialsPaginated, removeRawMaterial, updateRawMaterial } from "../services/raw-material.service";
 import { toast } from "sonner";
 
-export const useProductPaginationQuery = (filters: Record<string, any>,
+export const useRawMaterialPaginationQuery = (filters: Record<string, any>,
   page: number,
   size: number
 ) =>
   useQuery({
-    queryKey: ["products", filters, page, size],
+    queryKey: ["raw-materials", filters, page, size],
     queryFn: () =>
-      getProductsPaginated({
+      getRawMaterialsPaginated({
         name: filters.name || undefined,
-        price: filters.price ? parseFloat(filters.price) : undefined,
+        stockQuantity: filters.stockQuantity || undefined,
         page,
         size,
       }),
@@ -20,19 +20,19 @@ export const useProductPaginationQuery = (filters: Record<string, any>,
     staleTime: 1000 * 60 * 5,
   });
 
-export const useCreateProductMutation = (
+export const useCreateRawMaterialMutation = (
   setOpen: (value: boolean) => void
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createProduct,
+    mutationFn: createRawMaterial,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["raw-materials"],
       });
 
-      toast.success("Produto criado com sucesso!");
+      toast.success("Matéria-prima criada com sucesso!");
       setOpen(false);
     },
     onError: (error: any) => {
@@ -41,18 +41,18 @@ export const useCreateProductMutation = (
   });
 };
 
-export const useDeleteProductMutation = (
+export const useDeleteRawMaterialMutation = (
   id: string
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => removeProduct(id),
+    mutationFn: () => removeRawMaterial(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["raw-materials"],
       });
-      toast.success("Produto deletado com sucesso!");
+      toast.success("Matéria-prima deletada com sucesso!");
     },
     onError: (error: any) => {
       toast.error(error.message);
@@ -60,18 +60,18 @@ export const useDeleteProductMutation = (
   });
 }
 
-export const useUpdateProductMutation = (
+export const useUpdateRawMaterialMutation = (
   setOpen: (value: boolean) => void
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateProduct,
+    mutationFn: updateRawMaterial,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["raw-materials"],
       });
-      toast.success("Produto atualizado com sucesso!");
+      toast.success("Matéria-prima atualizada com sucesso!");
       setOpen(false);
     },
     onError: (error) => {

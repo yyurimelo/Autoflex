@@ -36,6 +36,6 @@
   },
   "include": [
     "src",
-    "src/pages/_app/layout/.tsx"
+    "src/routes/_app/layout/.tsx"
   ]
 }

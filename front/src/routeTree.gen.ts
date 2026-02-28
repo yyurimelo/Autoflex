@@ -8,10 +8,11 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './pages/__root'
-import { Route as IndexRouteImport } from './pages/index'
-import { Route as AppAppRouteImport } from './pages/_app/app'
-import { Route as AppAppProductIndexRouteImport } from './pages/_app/app.product/index'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppAppRouteImport } from './routes/_app/app'
+import { Route as AppAppRawMaterialIndexRouteImport } from './routes/_app/app.raw-material/index'
+import { Route as AppAppProductIndexRouteImport } from './routes/_app/app.product/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,6 +24,11 @@ const AppAppRoute = AppAppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppAppRawMaterialIndexRoute = AppAppRawMaterialIndexRouteImport.update({
+  id: '/raw-material/',
+  path: '/raw-material/',
+  getParentRoute: () => AppAppRoute,
+} as any)
 const AppAppProductIndexRoute = AppAppProductIndexRouteImport.update({
   id: '/product/',
   path: '/product/',
@@ -33,24 +39,32 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppAppRouteWithChildren
   '/app/product/': typeof AppAppProductIndexRoute
+  '/app/raw-material/': typeof AppAppRawMaterialIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppAppRouteWithChildren
   '/app/product': typeof AppAppProductIndexRoute
+  '/app/raw-material': typeof AppAppRawMaterialIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app/app': typeof AppAppRouteWithChildren
   '/_app/app/product/': typeof AppAppProductIndexRoute
+  '/_app/app/raw-material/': typeof AppAppRawMaterialIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/product/'
+  fullPaths: '/' | '/app' | '/app/product/' | '/app/raw-material/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/product'
-  id: '__root__' | '/' | '/_app/app' | '/_app/app/product/'
+  to: '/' | '/app' | '/app/product' | '/app/raw-material'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app/app'
+    | '/_app/app/product/'
+    | '/_app/app/raw-material/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -74,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/app/raw-material/': {
+      id: '/_app/app/raw-material/'
+      path: '/raw-material'
+      fullPath: '/app/raw-material/'
+      preLoaderRoute: typeof AppAppRawMaterialIndexRouteImport
+      parentRoute: typeof AppAppRoute
+    }
     '/_app/app/product/': {
       id: '/_app/app/product/'
       path: '/product'
@@ -86,10 +107,12 @@ declare module '@tanstack/react-router' {
 
 interface AppAppRouteChildren {
   AppAppProductIndexRoute: typeof AppAppProductIndexRoute
+  AppAppRawMaterialIndexRoute: typeof AppAppRawMaterialIndexRoute
 }
 
 const AppAppRouteChildren: AppAppRouteChildren = {
   AppAppProductIndexRoute: AppAppProductIndexRoute,
+  AppAppRawMaterialIndexRoute: AppAppRawMaterialIndexRoute,
 }
 
 const AppAppRouteWithChildren =

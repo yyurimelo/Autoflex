@@ -33,7 +33,7 @@ public class RawMaterialSpec {
         };
     }
 
-    public static Specification<RawMaterial> stockQuantityLessThanOrEqual(Integer maxStockQuantity) {
+public static Specification<RawMaterial> stockQuantityLessThanOrEqual(Integer maxStockQuantity) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(maxStockQuantity)) {
                 return null;
@@ -42,6 +42,19 @@ public class RawMaterialSpec {
             return builder.lessThanOrEqualTo(
                 root.get("stockQuantity"),
                 maxStockQuantity
+            );
+        };
+    }
+    
+    public static Specification<RawMaterial> stockQuantityEquals(Integer stockQuantity) {
+        return (root, query, builder) -> {
+            if (ObjectUtils.isEmpty(stockQuantity)) {
+                return null;
+            }
+            
+            return builder.equal(
+                root.get("stockQuantity"),
+                stockQuantity
             );
         };
     }

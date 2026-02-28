@@ -10,17 +10,11 @@ import lombok.Data;
 public class ProductFilter {
 
     private String name;
-    private Double minPrice;
-    private Double maxPrice;
-    private Integer minProducibleQuantity;
-    private Integer maxProducibleQuantity;
+    private Double price;
 
     public Specification<Product> toSpecification(){
         return Specification
             .where(ProductSpec.nameContains(name))
-            .and(ProductSpec.priceGreaterThanOrEqual(minPrice))
-            .and(ProductSpec.priceLessThanOrEqual(maxPrice))
-            .and(ProductSpec.producibleQuantityGreaterThanOrEqual(minProducibleQuantity))
-            .and(ProductSpec.producibleQuantityLessThanOrEqual(maxProducibleQuantity));
+            .and(ProductSpec.priceEquals(price));
     }
 }
