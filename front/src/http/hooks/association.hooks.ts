@@ -28,9 +28,8 @@ export const useCreateAssociationMutation = (
   return useMutation({
     mutationFn: createAssociation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["associations"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["associations"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
 
       toast.success("Associação criada com sucesso!");
       setOpen(false);
@@ -49,9 +48,8 @@ export const useDeleteAssociationMutation = (
   return useMutation({
     mutationFn: () => removeAssociation(id),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["associations"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["associations"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Associação deletada com sucesso!");
     },
     onError: (error: any) => {
@@ -68,9 +66,8 @@ export const useUpdateAssociationMutation = (
   return useMutation({
     mutationFn: updateAssociation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["associations"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["associations"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Associação atualizada com sucesso!");
       setOpen(false);
     },

@@ -28,9 +28,8 @@ export const useCreateRawMaterialMutation = (
   return useMutation({
     mutationFn: createRawMaterial,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["raw-materials"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["raw-materials"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
 
       toast.success("Matéria-prima criada com sucesso!");
       setOpen(false);
@@ -49,9 +48,8 @@ export const useDeleteRawMaterialMutation = (
   return useMutation({
     mutationFn: () => removeRawMaterial(id),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["raw-materials"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["raw-materials"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Matéria-prima deletada com sucesso!");
     },
     onError: (error: any) => {
@@ -68,9 +66,8 @@ export const useUpdateRawMaterialMutation = (
   return useMutation({
     mutationFn: updateRawMaterial,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["raw-materials"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["raw-materials"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Matéria-prima atualizada com sucesso!");
       setOpen(false);
     },

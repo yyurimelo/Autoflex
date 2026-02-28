@@ -1,23 +1,21 @@
 import { useSuggestionPaginationQuery } from '@/http/hooks/suggestion.hooks';
 import { createFileRoute } from '@tanstack/react-router';
-import { getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { suggestionColumns } from './-columns';
 import { DataTable } from '@/components/ui/data-table';
 import { useGlobalPageSize } from '@/hooks/use-global-page-size';
-import { useScopedFilters } from '@/hooks/use-scoped-filters';
+import { useState } from 'react';
 
 export const Route = createFileRoute('/_app/app/associations/suggestions/')({
   component: Suggestions,
 })
 
-function Suggestions() {
+export function Suggestions() {
   const { pageSize, setSize } = useGlobalPageSize();
-
-  const { filters, setPage } = useScopedFilters("suggestions");
-  const page = filters.page ?? 0;
+  const [page, setPage] = useState(0);
 
   const { data: result, isLoading } =
-    useSuggestionPaginationQuery(filters, page, pageSize);
+    useSuggestionPaginationQuery(page, pageSize);
 
   const table = useReactTable({
     data: result?.content ?? [],
@@ -32,11 +30,7 @@ function Suggestions() {
       },
     },
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   return (

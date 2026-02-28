@@ -3,9 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { associationColumns } from './-columns';
 import { DataTable } from '@/components/ui/data-table';
-import { AssociationCreate } from './-create';
 import { useGlobalPageSize } from '@/hooks/use-global-page-size';
-import { AssociationFilters } from './-filters';
 import { useScopedFilters } from '@/hooks/use-scoped-filters';
 import { AssociationFiltersTag } from './-filters-tag';
 

@@ -5,6 +5,7 @@ import { Grid, Lightbulb } from 'lucide-react';
 import { AssociationsGrid } from "./associations"
 import { AssociationFilters } from './associations/-filters';
 import { AssociationCreate } from './associations/-create';
+import { Suggestions } from './suggestions';
 
 export const Route = createFileRoute('/_app/app/associations/')({
   component: Associations,
@@ -35,7 +36,7 @@ function Associations() {
         <div>
           <h1 className="text-xl font-bold">{tab === "grid" ? "Associações" : "Sugestões"}</h1>
           <span className="text-base text-muted-foreground">
-            Segue abaixo a lista de {tab === "grid" ? "Associações" : "Sugestões"}.
+            Segue abaixo a lista de {tab === "grid" ? "associações" : "sugestões"}.
           </span>
         </div>
 
@@ -67,9 +68,9 @@ function Associations() {
           <AssociationsGrid />
         </TabsContent>
 
-        {/* <TabsContent value="external">
+        <TabsContent value="external">
           <Suggestions  />
-        </TabsContent> */}
+        </TabsContent>
       </Tabs>
     </>
   )

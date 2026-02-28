@@ -28,9 +28,8 @@ export const useCreateProductMutation = (
   return useMutation({
     mutationFn: createProduct,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
 
       toast.success("Produto criado com sucesso!");
       setOpen(false);
@@ -49,9 +48,8 @@ export const useDeleteProductMutation = (
   return useMutation({
     mutationFn: () => removeProduct(id),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Produto deletado com sucesso!");
     },
     onError: (error: any) => {
@@ -68,9 +66,8 @@ export const useUpdateProductMutation = (
   return useMutation({
     mutationFn: updateProduct,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["suggestions"] });
       toast.success("Produto atualizado com sucesso!");
       setOpen(false);
     },
