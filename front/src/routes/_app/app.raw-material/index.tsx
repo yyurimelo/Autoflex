@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_app/app/raw-material/')({
   component: RawMaterial,
 })
 
-function RawMaterial() {
+export function RawMaterial() {
   const { pageSize, setSize } = useGlobalPageSize();
 
   const { filters, setPage } = useScopedFilters("raw-materials");

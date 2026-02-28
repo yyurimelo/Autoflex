@@ -44,6 +44,10 @@ export function RawMaterialUpdate({ item, open, setOpen }: Props) {
 
   const form = useForm<UpdateRawMaterialForm>({
     resolver: zodResolver(updateRawMaterialForm),
+    defaultValues: {
+      name: "",
+      stockQuantity: 0,
+    },
   });
 
   useEffect(() => {

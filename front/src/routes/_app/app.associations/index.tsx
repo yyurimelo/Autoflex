@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_app/app/associations/')({
   }),
 })
 
-function Associations() {
+export function Associations() {
   const { tab } = Route.useSearch();
   const navigate = Route.useNavigate();
 
@@ -56,7 +56,7 @@ function Associations() {
               Grid
             </TabsTrigger>
 
-            <TabsTrigger value="external" onClick={() => handleChangeTab("external")}>
+            <TabsTrigger value="suggestions" onClick={() => handleChangeTab("suggestions")}>
               <Lightbulb className="w-4 h-4 mr-2" />
               Sugestões
             </TabsTrigger>
@@ -68,7 +68,7 @@ function Associations() {
           <AssociationsGrid />
         </TabsContent>
 
-        <TabsContent value="external">
+        <TabsContent value="suggestions">
           <Suggestions  />
         </TabsContent>
       </Tabs>

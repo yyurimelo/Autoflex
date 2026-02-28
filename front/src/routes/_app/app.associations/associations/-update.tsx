@@ -51,6 +51,11 @@ export function AssociationUpdate({ item, open, setOpen }: Props) {
 
   const form = useForm<UpdateAssociationForm>({
     resolver: zodResolver(updateAssociationForm),
+    defaultValues: {
+      productId: "",
+      rawMaterialId: "",
+      requiredQuantity: 0,
+    },
   });
 
   useEffect(() => {

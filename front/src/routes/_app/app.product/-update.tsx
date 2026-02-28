@@ -45,6 +45,10 @@ export function ProductUpdate({ item, open, setOpen }: Props) {
 
   const form = useForm<UpdateProductForm>({
     resolver: zodResolver(updateProductForm),
+    defaultValues: {
+      name: "",
+      price: 0,
+    },
   });
 
   useEffect(() => {
