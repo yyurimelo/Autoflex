@@ -14,5 +14,7 @@ public interface ProductRawMaterialService {
     
     ProductRawMaterial findById(Long id);
     
+    ProductRawMaterial update(ProductRawMaterial productRawMaterial);
+    
     void deleteById(Long id);
 }

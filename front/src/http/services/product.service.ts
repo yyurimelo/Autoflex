@@ -62,6 +62,11 @@ export async function getProduct(id: string): Promise<ProductDataModel> {
   return response.data;
 }
 
+export async function getAllProducts(): Promise<ProductDataModel[]> {
+  const response = await http.get(API_ENDPOINTS.PRODUCT.GET_ALL);
+  return response.data;
+}
+
 export async function removeProduct(id: string) {
   const response = await http.delete(API_ENDPOINTS.PRODUCT.DELETE, {
     params: {

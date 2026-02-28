@@ -1,6 +1,6 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createProduct, getProductsPaginated, removeProduct, updateProduct } from "../services/product.service";
+import { createProduct, getProductsPaginated, removeProduct, updateProduct, getAllProducts } from "../services/product.service";
 import { toast } from "sonner";
 
 export const useProductPaginationQuery = (filters: Record<string, any>,
@@ -12,7 +12,7 @@ export const useProductPaginationQuery = (filters: Record<string, any>,
     queryFn: () =>
       getProductsPaginated({
         name: filters.name || undefined,
-        price: filters.price ? parseFloat(filters.price) : undefined,
+        price: filters.price ? String(filters.price) : undefined,
         page,
         size,
       }),
@@ -79,3 +79,10 @@ export const useUpdateProductMutation = (
     },
   })
 }
+
+export const useAllProductsQuery = () =>
+  useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts,
+    staleTime: 1000 * 60 * 5,
+  });

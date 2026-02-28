@@ -62,6 +62,11 @@ export async function getRawMaterial(id: string): Promise<RawMaterialDataModel> 
   return response.data;
 }
 
+export async function getAllRawMaterials(): Promise<RawMaterialDataModel[]> {
+  const response = await http.get(API_ENDPOINTS.RAW_MATERIAL.GET_ALL);
+  return response.data;
+}
+
 export async function removeRawMaterial(id: string) {
   const response = await http.delete(API_ENDPOINTS.RAW_MATERIAL.DELETE, {
     params: {

@@ -1,7 +1,10 @@
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { createFileRoute } from '@tanstack/react-router';
 import { Grid, Lightbulb } from 'lucide-react';
+import { AssociationsGrid } from "./associations"
+import { AssociationFilters } from './associations/-filters';
+import { AssociationCreate } from './associations/-create';
 
 export const Route = createFileRoute('/_app/app/associations/')({
   component: Associations,
@@ -37,9 +40,10 @@ function Associations() {
         </div>
 
         <div className="flex items-center justify-end gap-3">
-          {/* <UserFilters tab={tab ?? defaultTab} /> */}
-
-          {/* {hasPermission("user-add") && <UserCreate tab={tab ?? defaultTab} />} */}
+          {tab === "grid" && (
+            <AssociationFilters />
+          )}
+          <AssociationCreate />
         </div>
       </header>
 
@@ -59,11 +63,11 @@ function Associations() {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
 
-        {/* <TabsContent value="grid">
-          <Associations  />
+        <TabsContent value="grid">
+          <AssociationsGrid />
         </TabsContent>
 
-        <TabsContent value="external">
+        {/* <TabsContent value="external">
           <Suggestions  />
         </TabsContent> */}
       </Tabs>

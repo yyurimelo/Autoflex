@@ -25,9 +25,9 @@ const queryClient = new QueryClient()
 function App() {
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <Toaster />
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
-                    <Toaster />
                     <RouterProvider router={router} />
                     <TanStackRouterDevtools router={router} />
                 </QueryClientProvider>

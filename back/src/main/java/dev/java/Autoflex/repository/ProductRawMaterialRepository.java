@@ -12,11 +12,12 @@ import org.springframework.stereotype.Repository;
 import dev.java.Autoflex.model.ProductRawMaterial;
 
 @Repository
-public interface ProductRawMaterialRepository extends JpaRepository<ProductRawMaterial, Long>, JpaSpecificationExecutor<ProductRawMaterial> {
-    
+public interface ProductRawMaterialRepository
+        extends JpaRepository<ProductRawMaterial, Long>, JpaSpecificationExecutor<ProductRawMaterial> {
+
     Page<ProductRawMaterial> findAll(Pageable pageable);
-    
+
     Optional<ProductRawMaterial> findByProductIdAndRawMaterialId(Long productId, Long rawMaterialId);
-    
+
     List<ProductRawMaterial> findByProductId(Long productId);
 }

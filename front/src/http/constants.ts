@@ -15,4 +15,14 @@ export const API_ENDPOINTS = {
     UPDATE: (id: string) => `/api/v1/raw_material/update/${id}`,
     DELETE: "/api/v1/raw_material/delete"
   },
+  ASSOCIATION: {
+    GET_ALL_PAGINATED: "/api/v1/product-raw-material/get/all/paginated",
+    GET: (id: string) => `/api/v1/product-raw-material/get/${id}`,
+    CREATE: "/api/v1/product-raw-material/create",
+    UPDATE: (id: string) => `/api/v1/product-raw-material/update/${id}`,
+    DELETE: "/api/v1/product-raw-material/delete"
+  },
+  SUGGESTION: {
+    GET_ALL_PAGINATED: "/api/v1/production-suggestion/get/all/paginated"
+  }
 } as const;

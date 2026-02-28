@@ -1,5 +1,7 @@
 package dev.java.Autoflex.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,44 +37,66 @@ public class ProductRawMaterialServiceImpl implements ProductRawMaterialService 
 
     @Override
     public ProductRawMaterial create(ProductRawMaterial productRawMaterial) {
-        // Validar se o produto existe
         Product product = productRepository.findById(productRawMaterial.getProduct().getId())
                 .orElseThrow(ProductNotFoundException::new);
-        
-        // Validar se a matéria-prima existe
+
         RawMaterial rawMaterial = rawMaterialRepository.findById(productRawMaterial.getRawMaterial().getId())
                 .orElseThrow(RawMaterialNotFoundException::new);
-        
-        // Verificar se a associação já existe
+
         if (productRawMaterialRepository.findByProductIdAndRawMaterialId(
                 product.getId(), rawMaterial.getId()).isPresent()) {
             throw new ProductRawMaterialAlreadyExistsException();
         }
-        
+
         productRawMaterial.setProduct(product);
         productRawMaterial.setRawMaterial(rawMaterial);
-        
+
         return productRawMaterialRepository.save(productRawMaterial);
     }
 
     @Override
     public Page<ProductRawMaterial> findByFilters(ProductRawMaterialFilter filter, Pageable pageable) {
-        
+
         return productRawMaterialRepository.findAll(filter.toSpecification(), pageable);
-    }   
+    }
 
     @Override
     public ProductRawMaterial findById(Long id) {
         return productRawMaterialRepository.findById(id)
                 .orElseThrow(ProductRawMaterialNotFoundException::new);
     }
-  
+
+    @Override
+    public ProductRawMaterial update(ProductRawMaterial productRawMaterial) {
+        ProductRawMaterial existing = productRawMaterialRepository.findById(productRawMaterial.getId())
+                .orElseThrow(ProductRawMaterialNotFoundException::new);
+
+        Product product = productRepository.findById(productRawMaterial.getProduct().getId())
+                .orElseThrow(ProductNotFoundException::new);
+
+        RawMaterial rawMaterial = rawMaterialRepository.findById(productRawMaterial.getRawMaterial().getId())
+                .orElseThrow(RawMaterialNotFoundException::new);
+
+        Optional<ProductRawMaterial> existingAssociation = productRawMaterialRepository.findByProductIdAndRawMaterialId(
+                product.getId(), rawMaterial.getId());
+
+        if (existingAssociation.isPresent() && !existingAssociation.get().getId().equals(productRawMaterial.getId())) {
+            throw new ProductRawMaterialAlreadyExistsException();
+        }
+
+        existing.setProduct(product);
+        existing.setRawMaterial(rawMaterial);
+        existing.setRequiredQuantity(productRawMaterial.getRequiredQuantity());
+
+        return productRawMaterialRepository.save(existing);
+    }
+
     @Override
     public void deleteById(Long id) {
         if (!productRawMaterialRepository.existsById(id)) {
             throw new ProductRawMaterialNotFoundException();
         }
-        
+
         productRawMaterialRepository.deleteById(id);
     }
 }
