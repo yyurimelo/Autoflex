@@ -68,6 +68,22 @@ autoflex/
 - [Maven](https://maven.apache.org/) (para build do backend)
 - [PostgreSQL](https://www.postgresql.org/) (rodando localmente na porta 5432)
 
+### Configuração do Ambiente
+
+#### Backend
+1. **Configurar o banco de dados**
+   - Crie um banco de dados PostgreSQL chamado `autoflex`
+   - Configure o acesso com usuário `postgres` e senha `useradmin`
+   - (ou ajuste as credenciais em `back/src/main/resources/application.properties`)
+
+#### Frontend
+1. **Variável de ambiente obrigatória**
+   - Crie um arquivo `.env` na raiz do projeto ou no diretório `front/`
+   - Adicione a seguinte variável:
+     ```
+     VITE_API_URL="http://localhost:8080/"
+     ```
+
 ### Passos para instalação
 
 1. **Clonar o repositório**
@@ -76,22 +92,34 @@ autoflex/
    cd autoflex
    ```
 
-2. **Configurar o banco de dados**
-   - Crie um banco de dados PostgreSQL chamado `autoflex`
-   - Configure o acesso com usuário `postgres` e senha `useradmin`
-   - (ou ajuste as credenciais em `back/src/main/resources/application.properties`)
-
-3. **Instalar dependências**
+2. **Instalar dependências**
    ```bash
    bun install
    ```
 
-4. **Iniciar as aplicações em modo desenvolvimento**
+3. **Iniciar as aplicações em modo desenvolvimento**
    ```bash
-   
-   bun run dev:front  # Frontend na porta padrão do Vite
+   # Terminal 1: Iniciar o backend
    bun run dev:back   # Backend na porta 8080
+   
+   # Terminal 2: Iniciar o frontend
+   bun run dev:front  # Frontend na porta padrão do Vite
    ```
+
+### Acessando a Documentação da API
+
+Após iniciar o backend, você pode acessar a documentação completa da API através do Swagger UI:
+```
+http://localhost:8080/swagger-ui/index.html#/
+```
+
+### Executando Testes
+
+Para executar os testes do frontend:
+```bash
+cd front
+bun test:run
+```
 
 ## Estrutura do Projeto
 
@@ -129,6 +157,8 @@ A documentação completa da API está disponível através do Swagger UI em `ht
 No package.json raiz:
 - `bun run dev:front` - Inicia apenas o frontend
 - `bun run dev:back` - Inicia apenas o backend
+- `bun i` - Instala todas as dependências do projeto
+- `bun test:run` - Executa os testes do frontend (requer estar no diretório front)
 
 ## Observações
 
