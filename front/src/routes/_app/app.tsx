@@ -46,6 +46,9 @@ function SettingsLayout() {
               <TabButton to='/app/raw-material' icon={ToolCase}>
                 Matéria prima
               </TabButton>
+              <TabButton to='/app/associations' icon={ToolCase}>
+                Associações
+              </TabButton>
             </div>
           </nav>
 

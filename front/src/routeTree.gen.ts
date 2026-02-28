@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppAppRouteImport } from './routes/_app/app'
 import { Route as AppAppRawMaterialIndexRouteImport } from './routes/_app/app.raw-material/index'
 import { Route as AppAppProductIndexRouteImport } from './routes/_app/app.product/index'
+import { Route as AppAppAssociationsIndexRouteImport } from './routes/_app/app.associations/index'
+import { Route as AppAppAssociationsSuggestionsIndexRouteImport } from './routes/_app/app.associations/suggestions/index'
+import { Route as AppAppAssociationsAssociationsIndexRouteImport } from './routes/_app/app.associations/associations/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,37 +37,80 @@ const AppAppProductIndexRoute = AppAppProductIndexRouteImport.update({
   path: '/product/',
   getParentRoute: () => AppAppRoute,
 } as any)
+const AppAppAssociationsIndexRoute = AppAppAssociationsIndexRouteImport.update({
+  id: '/associations/',
+  path: '/associations/',
+  getParentRoute: () => AppAppRoute,
+} as any)
+const AppAppAssociationsSuggestionsIndexRoute =
+  AppAppAssociationsSuggestionsIndexRouteImport.update({
+    id: '/associations/suggestions/',
+    path: '/associations/suggestions/',
+    getParentRoute: () => AppAppRoute,
+  } as any)
+const AppAppAssociationsAssociationsIndexRoute =
+  AppAppAssociationsAssociationsIndexRouteImport.update({
+    id: '/associations/associations/',
+    path: '/associations/associations/',
+    getParentRoute: () => AppAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppAppRouteWithChildren
+  '/app/associations/': typeof AppAppAssociationsIndexRoute
   '/app/product/': typeof AppAppProductIndexRoute
   '/app/raw-material/': typeof AppAppRawMaterialIndexRoute
+  '/app/associations/associations/': typeof AppAppAssociationsAssociationsIndexRoute
+  '/app/associations/suggestions/': typeof AppAppAssociationsSuggestionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppAppRouteWithChildren
+  '/app/associations': typeof AppAppAssociationsIndexRoute
   '/app/product': typeof AppAppProductIndexRoute
   '/app/raw-material': typeof AppAppRawMaterialIndexRoute
+  '/app/associations/associations': typeof AppAppAssociationsAssociationsIndexRoute
+  '/app/associations/suggestions': typeof AppAppAssociationsSuggestionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app/app': typeof AppAppRouteWithChildren
+  '/_app/app/associations/': typeof AppAppAssociationsIndexRoute
   '/_app/app/product/': typeof AppAppProductIndexRoute
   '/_app/app/raw-material/': typeof AppAppRawMaterialIndexRoute
+  '/_app/app/associations/associations/': typeof AppAppAssociationsAssociationsIndexRoute
+  '/_app/app/associations/suggestions/': typeof AppAppAssociationsSuggestionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/product/' | '/app/raw-material/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/associations/'
+    | '/app/product/'
+    | '/app/raw-material/'
+    | '/app/associations/associations/'
+    | '/app/associations/suggestions/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/product' | '/app/raw-material'
+  to:
+    | '/'
+    | '/app'
+    | '/app/associations'
+    | '/app/product'
+    | '/app/raw-material'
+    | '/app/associations/associations'
+    | '/app/associations/suggestions'
   id:
     | '__root__'
     | '/'
     | '/_app/app'
+    | '/_app/app/associations/'
     | '/_app/app/product/'
     | '/_app/app/raw-material/'
+    | '/_app/app/associations/associations/'
+    | '/_app/app/associations/suggestions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -102,17 +148,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppProductIndexRouteImport
       parentRoute: typeof AppAppRoute
     }
+    '/_app/app/associations/': {
+      id: '/_app/app/associations/'
+      path: '/associations'
+      fullPath: '/app/associations/'
+      preLoaderRoute: typeof AppAppAssociationsIndexRouteImport
+      parentRoute: typeof AppAppRoute
+    }
+    '/_app/app/associations/suggestions/': {
+      id: '/_app/app/associations/suggestions/'
+      path: '/associations/suggestions'
+      fullPath: '/app/associations/suggestions/'
+      preLoaderRoute: typeof AppAppAssociationsSuggestionsIndexRouteImport
+      parentRoute: typeof AppAppRoute
+    }
+    '/_app/app/associations/associations/': {
+      id: '/_app/app/associations/associations/'
+      path: '/associations/associations'
+      fullPath: '/app/associations/associations/'
+      preLoaderRoute: typeof AppAppAssociationsAssociationsIndexRouteImport
+      parentRoute: typeof AppAppRoute
+    }
   }
 }
 
 interface AppAppRouteChildren {
+  AppAppAssociationsIndexRoute: typeof AppAppAssociationsIndexRoute
   AppAppProductIndexRoute: typeof AppAppProductIndexRoute
   AppAppRawMaterialIndexRoute: typeof AppAppRawMaterialIndexRoute
+  AppAppAssociationsAssociationsIndexRoute: typeof AppAppAssociationsAssociationsIndexRoute
+  AppAppAssociationsSuggestionsIndexRoute: typeof AppAppAssociationsSuggestionsIndexRoute
 }
 
 const AppAppRouteChildren: AppAppRouteChildren = {
+  AppAppAssociationsIndexRoute: AppAppAssociationsIndexRoute,
   AppAppProductIndexRoute: AppAppProductIndexRoute,
   AppAppRawMaterialIndexRoute: AppAppRawMaterialIndexRoute,
+  AppAppAssociationsAssociationsIndexRoute:
+    AppAppAssociationsAssociationsIndexRoute,
+  AppAppAssociationsSuggestionsIndexRoute:
+    AppAppAssociationsSuggestionsIndexRoute,
 }
 
 const AppAppRouteWithChildren =
