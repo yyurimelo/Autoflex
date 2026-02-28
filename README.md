@@ -4,6 +4,12 @@
 
 O Autoflex é um sistema de gerenciamento de produção desenvolvido com uma arquitetura monorepo, projetado para otimizar o controle de matérias-primas, produtos e sugestões de produção. A aplicação oferece uma interface moderna e eficiente para gerenciar recursos de produção em ambiente industrial.
 
+## System Design
+
+![System Design](./front/public/system_design.png)
+
+*Figura: Diagrama simplificado da arquitetura do sistema*
+
 ## Arquitetura do Sistema
 
 O projeto segue uma arquitetura cliente-servidor clássica com três camadas principais:
