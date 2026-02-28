@@ -36,6 +36,27 @@ O projeto segue uma arquitetura cliente-servidor clássica com três camadas pri
 - **Vite 7.3.1**: Build tool rápido e moderno
 - **ESLint**: Análise estática de código
 
+#### Estado e Roteamento
+- **TanStack Router**: Sistema de roteamento tipo seguro
+- **Redux Toolkit**: State management global da aplicação
+- **TanStack Query**: Cache e sincronização de dados do servidor
+
+#### UI e Estilização
+- **Tailwind CSS 4.2.1**: Framework de estilização utility-first
+- **Radix UI + shadcn/ui**: Componentes UI acessíveis e reutilizáveis
+- **Lucide React**: Biblioteca de ícones
+- **Sonner**: Sistema de notificações toast
+- **TanStack Table**: Componentes para tabelas complexas
+
+#### Formulários e Validação
+- **React Hook Form 7.71.2**: Gerenciamento de formulários
+- **Zod 4.3.6**: Validação de esquemas TypeScript-first
+- **@hookform/resolvers**: Integrador entre React Hook Form e Zod
+
+#### Testes
+- **Vitest**: Framework de testes unitários
+- **Testing Library**: Utilitários para testes de React
+
 ### Backend
 - **Spring Boot 3.3.5**: Framework principal
 - **Spring Data JPA**: Persistência de dados
