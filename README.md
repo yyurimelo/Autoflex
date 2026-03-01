@@ -127,10 +127,10 @@ autoflex/
 3. **Iniciar as aplicações em modo desenvolvimento**
    ```bash
    # Terminal 1: Iniciar o backend
-   bun run dev:back   # Backend na porta 8080
+   bun dev:back   # Backend na porta 8080
    
    # Terminal 2: Iniciar o frontend
-   bun run dev:front  # Frontend na porta padrão do Vite
+   bun dev:front  # Frontend na porta padrão do Vite
    ```
 
 ### Acessando a Documentação da API
@@ -182,8 +182,8 @@ A documentação completa da API está disponível através do Swagger UI em `ht
 ## Scripts Úteis
 
 No package.json raiz:
-- `bun run dev:front` - Inicia apenas o frontend
-- `bun run dev:back` - Inicia apenas o backend
+- `bun dev:front` - Inicia apenas o frontend
+- `bun dev:back` - Inicia apenas o backend
 - `bun i` - Instala todas as dependências do projeto
 - `bun test:run` - Executa os testes do frontend (requer estar no diretório front)
 
