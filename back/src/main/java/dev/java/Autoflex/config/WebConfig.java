@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/api/**")
-				.allowedOrigins("http://localhost:5173", "https://autoflex-iota.vercel.app")
+				.allowedOrigins("http://localhost:5173", "https://autoflex-lyart.vercel.app")
 				.allowedMethods("*")
 				.allowedHeaders("*")
 				.allowCredentials(true);
