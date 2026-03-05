@@ -1,3 +1,4 @@
+import { GithubLink } from '@/components/github-link';
 import { ModeToggle } from '@/components/mode-toggle';
 import { cn } from '@/lib/utils';
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
@@ -46,7 +47,8 @@ function SettingsLayout() {
     <>
       <div className="flex flex-col items-center justify-center p-4 lg:p-6">
         <div className="w-full max-w-6xl space-y-2">
-          <header className='flex items-center justify-end w-full'>
+          <header className='flex items-center justify-end w-full gap-1'>
+            <GithubLink />
             <ModeToggle />
           </header>
           <div className="flex flex-col lg:flex-row gap-4">
